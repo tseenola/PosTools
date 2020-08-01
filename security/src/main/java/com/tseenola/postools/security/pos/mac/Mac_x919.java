@@ -1,8 +1,8 @@
 package com.tseenola.postools.security.pos.mac;
 
-import mac.utils.MacCalculaterUtils;
-import des.algorithm.DesImpl;
-import des.utils.DesUtils;
+
+import com.tseenola.postools.security.des2.DesImpl;
+import com.tseenola.postools.security.intface.ISecurity;
 
 /**
  * Created by lenovo on 2017/4/12.
@@ -19,24 +19,15 @@ import des.utils.DesUtils;
  *    (7)      用MAC密钥左半部加密(6)的结果。
  *    (8)      取(7)的结果的左半部作为MAC。
  */
-
-public class MacCalculaterX9_19 implements IMacCalculater {
-
-    private MacCalculaterX9_19(){}
-
-    private static final MacCalculaterX9_19 sMacCalculaterX9_19 = new MacCalculaterX9_19();
-    public static MacCalculaterX9_19 getInstance(){
-        return sMacCalculaterX9_19;
-    }
-
+public class Mac_x919 implements IMacCaculator{
     @Override
-    public byte[] getMac(int pMacKeyIndex, int pDataInLen, byte[] pNeedMacDatas) {
+    public byte[] getMacByHard(byte[] pNeedCallMacDatas, ISecurity pSecurity) throws Exception {
         return new byte[0];
     }
 
     @Override
-    public byte[] getMac(byte[] pKeys, byte[] pNeedMacDatas) throws Exception {
-        if (pKeys == null || pNeedMacDatas == null)
+    public byte[] getMacBySoft(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity) throws Exception {
+        if (pKeys == null || pNeedCallMacDatas == null)
             return null;
 
         if (pKeys.length != 16) {
@@ -47,11 +38,12 @@ public class MacCalculaterX9_19 implements IMacCalculater {
         byte[] keyRight = new byte[8];
         System.arraycopy(pKeys, 0, keyLeft, 0, 8);
         System.arraycopy(pKeys, 8, keyRight, 0, 8);
+        byte[] result99 = new Mac_x99().getMacBySoft(pNeedCallMacDatas,keyLeft,pSecurity);
+        //byte[] result99 = MacCalculaterUtils.getMac(keyLeft, pNeedMacDatas,MacCalculaterX9_9.getInstance());
+        byte[] resultTemp = DesImpl.getInstance().decryDataSoft(result99,keyRight);
+        //byte[] resultTemp = DesUtils.decrypt(keyRight, result99, DesImpl.getInstance());
 
-        byte[] result99 = MacCalculaterUtils.getMac(keyLeft, pNeedMacDatas,MacCalculaterX9_9.getInstance());
-
-        byte[] resultTemp = DesUtils.decrypt(keyRight, result99, DesImpl.getInstance());
-
-        return DesUtils.encrypt(keyLeft, resultTemp, DesImpl.getInstance());
+        //return DesUtils.encrypt(keyLeft, resultTemp, DesImpl.getInstance());
+        return DesImpl.getInstance().encryDataSoft(resultTemp,keyLeft);
     }
 }

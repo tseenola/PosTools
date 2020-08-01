@@ -12,14 +12,14 @@ public interface ISecurity {
      * @param pNeedEncryData :被加密数据
      * @param pKey            :密钥
      */
-    void encryDataSoft(byte [] pNeedEncryData,byte [] pKey)throws Exception;
+    byte []  encryDataSoft(byte [] pNeedEncryData,byte [] pKey)throws Exception;
     /**
      * 软解密
      * 自己实现解密算法
      * @param pNeedEncryData :被加密数据
      * @param pKey            :密钥
      */
-    void decryDataSoft(byte [] pNeedEncryData,byte [] pKey)throws Exception;
+    byte []  decryDataSoft(byte [] pNeedEncryData,byte [] pKey)throws Exception;
 
     /**
      * 硬加密
@@ -27,12 +27,12 @@ public interface ISecurity {
      * @param pNeedEncryData
      * @throws Exception
      */
-    void encryDataHard(byte [] pNeedEncryData)throws Exception;
+    byte []  encryDataHard(byte [] pNeedEncryData)throws Exception;
     /**
      * 硬解密
      * 调用底层安全芯片进行解密，可能是POS或者是密码键盘
      * @param pNeedEncryData
      * @throws Exception
      */
-    void decryDataHard(byte [] pNeedEncryData)throws Exception;
+    byte []  decryDataHard(byte [] pNeedEncryData)throws Exception;
 }

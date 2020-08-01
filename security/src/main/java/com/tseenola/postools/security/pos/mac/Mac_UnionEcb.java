@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public class Mac_UnionEcb implements IMacCaculator{
     @Override
-    public byte[] getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, int pSecurityType) throws Exception {
+    public byte[] getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, @Constant.SecurityType int pSecurityType) throws Exception {
         byte[] buf = new byte[17];
         byte[] tmpbuf = new byte[17];
         byte [] macOut = new byte[8];

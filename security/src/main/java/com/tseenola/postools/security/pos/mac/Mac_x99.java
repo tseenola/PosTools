@@ -16,7 +16,7 @@ import com.tseenola.postools.security.utils.Constant;
  */
 public class Mac_x99 implements IMacCaculator{
     @Override
-    public byte[] getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, int pSecurityType) throws Exception {
+    public byte[] getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity,@Constant.SecurityType int pSecurityType) throws Exception {
         final int dataLength = pNeedCallMacDatas.length;
         final int lastLength = dataLength % 8;
         final int lastBlockLength = lastLength == 0 ? 8 : lastLength;

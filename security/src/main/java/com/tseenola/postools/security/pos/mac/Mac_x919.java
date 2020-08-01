@@ -22,7 +22,7 @@ import com.tseenola.postools.security.utils.Constant;
  */
 public class Mac_x919 implements IMacCaculator{
     @Override
-    public byte[] getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, int pSecurityType) throws Exception {
+    public byte[] getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity,@Constant.SecurityType int pSecurityType) throws Exception {
         byte[] keyLeft = new byte[8];
         byte[] keyRight = new byte[8];
         System.arraycopy(pKeys, 0, keyLeft, 0, 8);

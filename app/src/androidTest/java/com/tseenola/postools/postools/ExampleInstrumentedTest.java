@@ -27,7 +27,7 @@ public class ExampleInstrumentedTest {
         String key = "1111111111111111";
         byte [] keys = ConvertUtils.hexStringToByte(key);
         try {
-            byte macResult [] = new Mac_UnionEcb().getMacBySoft(needCallMac,keys,DesImpl.getInstance());
+            byte macResult [] = new Mac_UnionEcb().getMac(needCallMac,keys,DesImpl.getInstance(),2);
             String result = ConvertUtils.bytesToHexString(macResult);
             System.out.println("result:"+result);
         } catch (Exception e) {

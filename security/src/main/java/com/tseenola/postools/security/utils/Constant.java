@@ -7,9 +7,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public class Constant {
-    public static final String SOFT = "SOFT";
-    public static final String HARD = "HARD";
-    @StringDef({SOFT,HARD})
+    public static final int SOFT = 0;
+    public static final int HARD = 1;
+    @IntDef({SOFT,HARD})
     @Retention(RetentionPolicy.SOURCE)
     public @interface SecurityType{}
 }

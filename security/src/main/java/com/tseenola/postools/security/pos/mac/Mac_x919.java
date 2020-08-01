@@ -3,6 +3,7 @@ package com.tseenola.postools.security.pos.mac;
 
 import com.tseenola.postools.security.des.DesImpl;
 import com.tseenola.postools.security.intface.ISecurity;
+import com.tseenola.postools.security.utils.Constant;
 
 /**
  * Created by lenovo on 2017/4/12.
@@ -21,29 +22,19 @@ import com.tseenola.postools.security.intface.ISecurity;
  */
 public class Mac_x919 implements IMacCaculator{
     @Override
-    public byte[] getMacByHard(byte[] pNeedCallMacDatas, ISecurity pSecurity) throws Exception {
-        return new byte[0];
-    }
-
-    @Override
-    public byte[] getMacBySoft(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity) throws Exception {
-        if (pKeys == null || pNeedCallMacDatas == null)
-            return null;
-
-        if (pKeys.length != 16) {
-            throw new RuntimeException("秘钥长度错误.ANSI X9.19MAC算法只使用双倍长密钥。");
-        }
-
+    public byte[] getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, int pSecurityType) throws Exception {
         byte[] keyLeft = new byte[8];
         byte[] keyRight = new byte[8];
         System.arraycopy(pKeys, 0, keyLeft, 0, 8);
         System.arraycopy(pKeys, 8, keyRight, 0, 8);
-        byte[] result99 = new Mac_x99().getMacBySoft(pNeedCallMacDatas,keyLeft,pSecurity);
-        //byte[] result99 = MacCalculaterUtils.getMac(keyLeft, pNeedMacDatas,MacCalculaterX9_9.getInstance());
-        byte[] resultTemp = DesImpl.getInstance().decryDataSoft(result99,keyRight);
-        //byte[] resultTemp = DesUtils.decrypt(keyRight, result99, DesImpl.getInstance());
+        byte[] result99 = new Mac_x99().getMac(pNeedCallMacDatas,keyLeft,pSecurity,pSecurityType);
 
-        //return DesUtils.encrypt(keyLeft, resultTemp, DesImpl.getInstance());
-        return DesImpl.getInstance().encryDataSoft(resultTemp,keyLeft);
+        if (pSecurityType == Constant.SOFT) {
+            byte[] resultTemp = pSecurity.decryDataSoft(result99,keyRight);
+            return pSecurity.encryDataSoft(resultTemp,keyLeft);
+        }else {
+            byte[] resultTemp = pSecurity.decryDataHard(result99);
+            return pSecurity.encryDataHard(resultTemp);
+        }
     }
 }

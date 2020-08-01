@@ -1,8 +1,8 @@
 package com.tseenola.postools.security.pos.mac;
 
 
-import com.tseenola.postools.security.des.DesImpl;
 import com.tseenola.postools.security.intface.ISecurity;
+import com.tseenola.postools.security.utils.Constant;
 import com.tseenola.postools.security.utils.ConvertUtils;
 
 import java.util.Arrays;
@@ -20,14 +20,8 @@ import java.util.Arrays;
  * h) 取前8个字节作为MAC值。
  */
 public class Mac_UnionEcb implements IMacCaculator{
-
     @Override
-    public byte[] getMacByHard(byte[] pNeedCallMacDatas, ISecurity pSecurity) throws Exception {
-        return new byte[0];
-    }
-
-    @Override
-    public byte[] getMacBySoft(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity) throws Exception {
+    public byte[] getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, int pSecurityType) throws Exception {
         byte[] buf = new byte[17];
         byte[] tmpbuf = new byte[17];
         byte [] macOut = new byte[8];
@@ -56,8 +50,12 @@ public class Mac_UnionEcb implements IMacCaculator{
         tmpbuf[16] = 0;
 
         System.arraycopy(tmpbuf, 0, buf, 0, 8);
-        macbuf = DesImpl.getInstance().encryDataSoft(buf,pKeys);
-        //Macbuf = DesUtils.encrypt(pKeys, buf, DesImpl.getInstance());
+
+        if (pSecurityType == Constant.SOFT) {
+            macbuf = pSecurity.encryDataSoft(buf,pKeys);
+        }else {
+            macbuf = pSecurity.encryDataHard(buf);
+        }
 
         Arrays.fill(buf, (byte) 0x00);
         System.arraycopy(macbuf, 0, buf, 0, 8);
@@ -67,8 +65,11 @@ public class Mac_UnionEcb implements IMacCaculator{
 
         Arrays.fill(macbuf, (byte) 0x00);
 
-        macbuf = DesImpl.getInstance().encryDataSoft(buf,pKeys);
-        //Macbuf = DesUtils.encrypt(pKeys, buf, DesImpl.getInstance());
+        if (pSecurityType == Constant.SOFT) {
+            macbuf = pSecurity.encryDataSoft(buf,pKeys);
+        }else {
+            macbuf = pSecurity.encryDataHard(buf);
+        }
 
         Arrays.fill(buf, (byte) 0x00);
         System.arraycopy(macbuf, 0, buf, 0, 8);

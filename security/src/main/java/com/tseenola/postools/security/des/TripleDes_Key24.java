@@ -2,6 +2,10 @@ package com.tseenola.postools.security.des;
 
 import com.tseenola.postools.security.intface.ISecurity;
 
+/**
+ * 3DES
+ * 密钥长度 24 字节
+ */
 public class TripleDes_Key24 implements ISecurity {
     @Override
     public byte[] encryDataSoft(byte[] pNeedEncryData, byte[] pKey) throws Exception {

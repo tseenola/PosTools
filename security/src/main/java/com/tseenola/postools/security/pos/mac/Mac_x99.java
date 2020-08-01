@@ -1,7 +1,8 @@
 package com.tseenola.postools.security.pos.mac;
 
-import com.tseenola.postools.security.des.DesImpl;
 import com.tseenola.postools.security.intface.ISecurity;
+import com.tseenola.postools.security.utils.Constant;
+
 /**
  * Created by lenovo on 2017/4/12.
  * 描述：X9.9MAC算法
@@ -15,15 +16,7 @@ import com.tseenola.postools.security.intface.ISecurity;
  */
 public class Mac_x99 implements IMacCaculator{
     @Override
-    public byte[] getMacByHard(byte[] pNeedCallMacDatas, ISecurity pSecurity) throws Exception {
-        return new byte[0];
-    }
-
-    @Override
-    public byte[] getMacBySoft(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity) throws Exception {
-        if (pKeys.length!=8){
-            throw new IllegalStateException("x9_9mac算法密钥长度应该为8");
-        }
+    public byte[] getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, int pSecurityType) throws Exception {
         final int dataLength = pNeedCallMacDatas.length;
         final int lastLength = dataLength % 8;
         final int lastBlockLength = lastLength == 0 ? 8 : lastLength;
@@ -36,19 +29,20 @@ public class Mac_x99 implements IMacCaculator{
             System.arraycopy(pNeedCallMacDatas, i * 8, dataBlock[i], 0, copyLength);
         }
 
-        DesImpl lDes = DesImpl.getInstance();
         byte[] desXor = new byte[8];
         for (int i = 0; i < blockCount; i++) {
             byte[] tXor = xOr(desXor, dataBlock[i]);
-            desXor = lDes.encryDataSoft(tXor,pKeys);
-            //desXor = DesUtils.encrypt(pKeys, tXor, DesImpl.getInstance());// DES加密
+            if (pSecurityType == Constant.SOFT) {
+                desXor = pSecurity.encryDataSoft(tXor,pKeys);
+            }else {
+                desXor = pSecurity.encryDataHard(tXor);
+            }
         }
         return desXor;
     }
 
     /**
      * 将b1和b2做异或，然后返回
-     *
      * @param b1
      * @param b2
      * @return 异或结果

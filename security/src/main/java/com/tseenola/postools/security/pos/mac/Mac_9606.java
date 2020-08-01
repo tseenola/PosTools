@@ -1,8 +1,8 @@
 package com.tseenola.postools.security.pos.mac;
 
 
-import com.tseenola.postools.security.des.DesImpl;
 import com.tseenola.postools.security.intface.ISecurity;
+import com.tseenola.postools.security.utils.Constant;
 
 import java.util.Arrays;
 /**
@@ -15,12 +15,7 @@ import java.util.Arrays;
  */
 public class Mac_9606 implements IMacCaculator{
     @Override
-    public byte[] getMacByHard(byte[] pNeedCallMacDatas, ISecurity pSecurity) throws Exception {
-        return new byte[0];
-    }
-
-    @Override
-    public byte[] getMacBySoft(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity) throws Exception {
+    public byte[] getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, int pSecurityType) throws Exception {
         byte[] buf = new byte[17];
         byte[] tmpbuf = new byte[17];
         byte [] macOut = new byte[8];
@@ -28,14 +23,10 @@ public class Mac_9606 implements IMacCaculator{
         int l = 0;
         int k = 0 ;
         int iRet = 0;
-
         byte[] inbuf = new byte[pNeedCallMacDatas.length + 8];
         byte[] macbuf = new byte[9];
-
         Arrays.fill(buf, (byte) 0x00);
-
         System.arraycopy(pNeedCallMacDatas, 0, inbuf, 0, pNeedCallMacDatas.length);
-
         if (pNeedCallMacDatas.length % 8 != 0){
             l = pNeedCallMacDatas.length / 8 + 1;
         } else{
@@ -46,12 +37,12 @@ public class Mac_9606 implements IMacCaculator{
         for (i = 0; i < l; i++)
             for (k = 0; k < 8; k++)
                 buf[k] ^= inbuf[i * 8 + k];
-
-        macbuf = DesImpl.getInstance().encryDataSoft(buf,pKeys);
-        //Macbuf = DesUtils.encrypt(pKeys, buf, DesImpl.getInstance());
-
+        if (pSecurityType == Constant.SOFT) {
+            macbuf = pSecurity.encryDataSoft(buf,pKeys);
+        }else {
+            macbuf = pSecurity.encryDataHard(buf);
+        }
         System.arraycopy(macbuf, 0, macOut, 0, 8);
-
         return macOut;
     }
 }

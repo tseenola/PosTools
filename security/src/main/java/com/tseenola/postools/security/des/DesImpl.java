@@ -1,4 +1,4 @@
-package com.tseenola.postools.security.des2;
+package com.tseenola.postools.security.des;
 
 import com.tseenola.postools.security.intface.ISecurity;
 

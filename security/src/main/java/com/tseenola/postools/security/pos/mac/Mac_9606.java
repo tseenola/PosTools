@@ -1,7 +1,7 @@
 package com.tseenola.postools.security.pos.mac;
 
 
-import com.tseenola.postools.security.des2.DesImpl;
+import com.tseenola.postools.security.des.DesImpl;
 import com.tseenola.postools.security.intface.ISecurity;
 
 import java.util.Arrays;

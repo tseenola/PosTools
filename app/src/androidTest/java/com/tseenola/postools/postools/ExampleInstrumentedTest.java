@@ -4,14 +4,12 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.tseenola.postools.security.des2.DesImpl;
+import com.tseenola.postools.security.des.DesImpl;
 import com.tseenola.postools.security.pos.mac.Mac_UnionEcb;
 import com.tseenola.postools.security.utils.ConvertUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
 
 /**
  * Instrumented test, which will execute on an Android device.

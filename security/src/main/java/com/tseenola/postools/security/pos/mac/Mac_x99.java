@@ -1,6 +1,6 @@
 package com.tseenola.postools.security.pos.mac;
 
-import com.tseenola.postools.security.des2.DesImpl;
+import com.tseenola.postools.security.des.DesImpl;
 import com.tseenola.postools.security.intface.ISecurity;
 /**
  * Created by lenovo on 2017/4/12.

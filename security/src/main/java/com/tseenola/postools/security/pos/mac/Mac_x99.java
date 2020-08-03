@@ -1,6 +1,9 @@
 package com.tseenola.postools.security.pos.mac;
 
+import android.util.Pair;
+
 import com.tseenola.postools.security.intface.ISecurity;
+import com.tseenola.postools.security.model.MacResult;
 import com.tseenola.postools.security.utils.Constant;
 
 /**
@@ -16,29 +19,33 @@ import com.tseenola.postools.security.utils.Constant;
  */
 public class Mac_x99 implements IMacCaculator{
     @Override
-    public byte[] getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity,@Constant.SecurityType int pSecurityType) throws Exception {
-        final int dataLength = pNeedCallMacDatas.length;
-        final int lastLength = dataLength % 8;
-        final int lastBlockLength = lastLength == 0 ? 8 : lastLength;
-        final int blockCount = dataLength / 8 + (lastLength > 0 ? 1 : 0);
+    public Pair<Boolean, MacResult> getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, @Constant.SecurityType int pSecurityType){
+        try{
+            final int dataLength = pNeedCallMacDatas.length;
+            final int lastLength = dataLength % 8;
+            final int lastBlockLength = lastLength == 0 ? 8 : lastLength;
+            final int blockCount = dataLength / 8 + (lastLength > 0 ? 1 : 0);
 
-        // 拆分数据（8字节块/Block）
-        byte[][] dataBlock = new byte[blockCount][8];
-        for (int i = 0; i < blockCount; i++) {
-            int copyLength = i == blockCount - 1 ? lastBlockLength : 8;
-            System.arraycopy(pNeedCallMacDatas, i * 8, dataBlock[i], 0, copyLength);
-        }
-
-        byte[] desXor = new byte[8];
-        for (int i = 0; i < blockCount; i++) {
-            byte[] tXor = xOr(desXor, dataBlock[i]);
-            if (pSecurityType == Constant.SOFT) {
-                desXor = pSecurity.encryDataSoft(tXor,pKeys);
-            }else {
-                desXor = pSecurity.encryDataHard(tXor);
+            // 拆分数据（8字节块/Block）
+            byte[][] dataBlock = new byte[blockCount][8];
+            for (int i = 0; i < blockCount; i++) {
+                int copyLength = i == blockCount - 1 ? lastBlockLength : 8;
+                System.arraycopy(pNeedCallMacDatas, i * 8, dataBlock[i], 0, copyLength);
             }
+
+            byte[] desXor = new byte[8];
+            for (int i = 0; i < blockCount; i++) {
+                byte[] tXor = xOr(desXor, dataBlock[i]);
+                if (pSecurityType == Constant.SOFT) {
+                    desXor = pSecurity.encryDataSoft(tXor,pKeys);
+                }else {
+                    desXor = pSecurity.encryDataHard(tXor);
+                }
+            }
+            return Pair.create(true,new MacResult(desXor));
+        }catch (Exception pE){
+            return Pair.create(false,new MacResult(pE.getMessage()));
         }
-        return desXor;
     }
 
     /**

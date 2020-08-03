@@ -1,8 +1,11 @@
 package com.tseenola.postools.security.pos.mac;
 
 
+import android.util.Pair;
+
 import com.tseenola.postools.security.des.DesImpl;
 import com.tseenola.postools.security.intface.ISecurity;
+import com.tseenola.postools.security.model.MacResult;
 import com.tseenola.postools.security.utils.Constant;
 
 /**
@@ -22,19 +25,27 @@ import com.tseenola.postools.security.utils.Constant;
  */
 public class Mac_x919 implements IMacCaculator{
     @Override
-    public byte[] getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity,@Constant.SecurityType int pSecurityType) throws Exception {
-        byte[] keyLeft = new byte[8];
-        byte[] keyRight = new byte[8];
-        System.arraycopy(pKeys, 0, keyLeft, 0, 8);
-        System.arraycopy(pKeys, 8, keyRight, 0, 8);
-        byte[] result99 = new Mac_x99().getMac(pNeedCallMacDatas,keyLeft,pSecurity,pSecurityType);
+    public Pair<Boolean, MacResult> getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, @Constant.SecurityType int pSecurityType){
+        try{
+            byte[] keyLeft = new byte[8];
+            byte[] keyRight = new byte[8];
+            System.arraycopy(pKeys, 0, keyLeft, 0, 8);
+            System.arraycopy(pKeys, 8, keyRight, 0, 8);
+            Pair<Boolean, MacResult> macX99 = new Mac_x99().getMac(pNeedCallMacDatas, keyLeft, pSecurity, pSecurityType);
+            if (!macX99.first) {
+                return macX99;
+            }
 
-        if (pSecurityType == Constant.SOFT) {
-            byte[] resultTemp = pSecurity.decryDataSoft(result99,keyRight);
-            return pSecurity.encryDataSoft(resultTemp,keyLeft);
-        }else {
-            byte[] resultTemp = pSecurity.decryDataHard(result99);
-            return pSecurity.encryDataHard(resultTemp);
+            byte[] result99 = macX99.second.getMac();
+            if (pSecurityType == Constant.SOFT) {
+                byte[] resultTemp = pSecurity.decryDataSoft(result99,keyRight);
+                return Pair.create(true,new MacResult(pSecurity.encryDataSoft(resultTemp,keyLeft)));
+            }else {
+                byte[] resultTemp = pSecurity.decryDataHard(result99);
+                return Pair.create(true,new MacResult(pSecurity.encryDataHard(resultTemp)));
+            }
+        }catch (Exception pE){
+            return Pair.create(false,new MacResult(pE.getMessage()));
         }
     }
 }

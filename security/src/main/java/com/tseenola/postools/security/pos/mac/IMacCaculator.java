@@ -1,6 +1,10 @@
 package com.tseenola.postools.security.pos.mac;
 
+import android.util.Pair;
+
 import com.tseenola.postools.security.intface.ISecurity;
+import com.tseenola.postools.security.model.BaseResult;
+import com.tseenola.postools.security.model.MacResult;
 import com.tseenola.postools.security.utils.Constant;
 
 public interface IMacCaculator {
@@ -13,5 +17,5 @@ public interface IMacCaculator {
      * @return
      * @throws Exception
      */
-    byte [] getMac(byte [] pNeedCallMacDatas, byte pKeys[], ISecurity pSecurity,@Constant.SecurityType int pSecurityType)throws Exception;
+    Pair<Boolean, MacResult> getMac(byte [] pNeedCallMacDatas, byte pKeys[], ISecurity pSecurity, @Constant.SecurityType int pSecurityType);
 }

@@ -1,7 +1,10 @@
 package com.tseenola.postools.security.pos.mac;
 
 
+import android.util.Pair;
+
 import com.tseenola.postools.security.intface.ISecurity;
+import com.tseenola.postools.security.model.MacResult;
 import com.tseenola.postools.security.utils.Constant;
 import com.tseenola.postools.security.utils.ConvertUtils;
 
@@ -21,62 +24,66 @@ import java.util.Arrays;
  */
 public class Mac_UnionEcb implements IMacCaculator{
     @Override
-    public byte[] getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, @Constant.SecurityType int pSecurityType) throws Exception {
-        byte[] buf = new byte[17];
-        byte[] tmpbuf = new byte[17];
-        byte [] macOut = new byte[8];
-        int i = 0;
-        int l = 0;
-        int k = 0 ;
+    public Pair<Boolean, MacResult> getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, @Constant.SecurityType int pSecurityType){
+        try{
+            byte[] buf = new byte[17];
+            byte[] tmpbuf = new byte[17];
+            byte [] macOut = new byte[8];
+            int i = 0;
+            int l = 0;
+            int k = 0 ;
 
-        byte[] inbuf = new byte[pNeedCallMacDatas.length + 8];
-        byte[] macbuf = new byte[9];
+            byte[] inbuf = new byte[pNeedCallMacDatas.length + 8];
+            byte[] macbuf = new byte[9];
 
-        Arrays.fill(buf, (byte) 0x00);
-        System.arraycopy(pNeedCallMacDatas, 0, inbuf, 0, pNeedCallMacDatas.length);
+            Arrays.fill(buf, (byte) 0x00);
+            System.arraycopy(pNeedCallMacDatas, 0, inbuf, 0, pNeedCallMacDatas.length);
 
-        if (pNeedCallMacDatas.length % 8 != 0){
-            l = pNeedCallMacDatas.length / 8 + 1;
-        } else{
-            l = pNeedCallMacDatas.length / 8;
-        }
+            if (pNeedCallMacDatas.length % 8 != 0){
+                l = pNeedCallMacDatas.length / 8 + 1;
+            } else{
+                l = pNeedCallMacDatas.length / 8;
+            }
 
-        buf = new byte[8];
-        for (i = 0; i < l; i++)
+            buf = new byte[8];
+            for (i = 0; i < l; i++)
+                for (k = 0; k < 8; k++)
+                    buf[k] ^= inbuf[i * 8 + k];
+
+            ConvertUtils.BcdToAsc(tmpbuf, buf, 16);
+            tmpbuf[16] = 0;
+
+            System.arraycopy(tmpbuf, 0, buf, 0, 8);
+
+            if (pSecurityType == Constant.SOFT) {
+                macbuf = pSecurity.encryDataSoft(buf,pKeys);
+            }else {
+                macbuf = pSecurity.encryDataHard(buf);
+            }
+
+            Arrays.fill(buf, (byte) 0x00);
+            System.arraycopy(macbuf, 0, buf, 0, 8);
+
             for (k = 0; k < 8; k++)
-                buf[k] ^= inbuf[i * 8 + k];
+                buf[k] ^= tmpbuf[8 + k];
 
-        ConvertUtils.BcdToAsc(tmpbuf, buf, 16);
-        tmpbuf[16] = 0;
+            Arrays.fill(macbuf, (byte) 0x00);
 
-        System.arraycopy(tmpbuf, 0, buf, 0, 8);
+            if (pSecurityType == Constant.SOFT) {
+                macbuf = pSecurity.encryDataSoft(buf,pKeys);
+            }else {
+                macbuf = pSecurity.encryDataHard(buf);
+            }
 
-        if (pSecurityType == Constant.SOFT) {
-            macbuf = pSecurity.encryDataSoft(buf,pKeys);
-        }else {
-            macbuf = pSecurity.encryDataHard(buf);
+            Arrays.fill(buf, (byte) 0x00);
+            System.arraycopy(macbuf, 0, buf, 0, 8);
+
+            Arrays.fill(tmpbuf, (byte) 0x00);
+            ConvertUtils.BcdToAsc(tmpbuf, buf, 16);
+            System.arraycopy(tmpbuf, 0, macOut, 0, 8);
+            return Pair.create(true,new MacResult(macOut));
+        }catch (Exception pE){
+            return Pair.create(false,new MacResult(pE.getMessage()));
         }
-
-        Arrays.fill(buf, (byte) 0x00);
-        System.arraycopy(macbuf, 0, buf, 0, 8);
-
-        for (k = 0; k < 8; k++)
-            buf[k] ^= tmpbuf[8 + k];
-
-        Arrays.fill(macbuf, (byte) 0x00);
-
-        if (pSecurityType == Constant.SOFT) {
-            macbuf = pSecurity.encryDataSoft(buf,pKeys);
-        }else {
-            macbuf = pSecurity.encryDataHard(buf);
-        }
-
-        Arrays.fill(buf, (byte) 0x00);
-        System.arraycopy(macbuf, 0, buf, 0, 8);
-
-        Arrays.fill(tmpbuf, (byte) 0x00);
-        ConvertUtils.BcdToAsc(tmpbuf, buf, 16);
-        System.arraycopy(tmpbuf, 0, macOut, 0, 8);
-        return macOut;
     }
 }

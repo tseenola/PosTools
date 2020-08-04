@@ -5,6 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Pair;
 
+import com.tseenola.postools.security.des.DesImpl;
 import com.tseenola.postools.security.pos.pin.Pin_Union;
 
 import org.junit.Test;

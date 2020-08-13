@@ -1,15 +1,13 @@
-/*
 package com.tseenola.postools.security.pos.mac;
 
 
 import android.util.Pair;
 
-import com.tseenola.postools.security.des.DesImpl;
 import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.MacResult;
+import com.tseenola.postools.security.pos.mac.model.MacParam;
 import com.tseenola.postools.security.utils.Constant;
 
-*/
 /**
  * Created by lijun on 2017/4/12.
  * 描述：
@@ -24,32 +22,39 @@ import com.tseenola.postools.security.utils.Constant;
  *    (6)      用MAC密钥右半部解密(5)的结果。
  *    (7)      用MAC密钥左半部加密(6)的结果。
  *    (8)      取(7)的结果的左半部作为MAC。
- *//*
-
-public class Mac_x919 implements IMacCaculator{
+ */
+public class Mac_x9192 implements IMacCaculator2{
     @Override
-    public Pair<Boolean, MacResult> getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, @Constant.SecurityType int pSecurityType){
+    public Pair<Boolean, MacResult> getMac(MacParam param, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
+            Pair<Boolean, MacResult> macX99 = null;
             byte[] keyLeft = new byte[8];
             byte[] keyRight = new byte[8];
-            System.arraycopy(pKeys, 0, keyLeft, 0, 8);
-            System.arraycopy(pKeys, 8, keyRight, 0, 8);
-            Pair<Boolean, MacResult> macX99 = new Mac_x99().getMac(pNeedCallMacDatas, keyLeft, pSecurity, pSecurityType);
+            if (param.getmSecurityType() == Constant.SOFT) {
+                System.arraycopy(param.getSoftEncryKeys(), 0, keyLeft, 0, 8);
+                System.arraycopy(param.getSoftEncryKeys(), 8, keyRight, 0, 8);
+            }else if (param.getmSecurityType() == Constant.HARD) {
+
+            }else {
+                return Pair.create(false,new MacResult("无效的参数【加密方式】"));
+            }
+            macX99 = new Mac_x992().getMac(param, pNeedCallMacDatas, pSecurity);
             if (!macX99.first) {
                 return macX99;
             }
 
             byte[] result99 = macX99.second.getMac();
-            if (pSecurityType == Constant.SOFT) {
+            if (param.getmSecurityType() == Constant.SOFT) {
                 byte[] resultTemp = pSecurity.decryDataSoft(result99,keyRight);
                 return Pair.create(true,new MacResult(pSecurity.encryDataSoft(resultTemp,keyLeft)));
-            }else {
+            }else if (param.getmSecurityType() == Constant.HARD) {
                 byte[] resultTemp = pSecurity.decryDataHard(result99);
                 return Pair.create(true,new MacResult(pSecurity.encryDataHard(resultTemp)));
+            }else {
+                return Pair.create(false,new MacResult("无效的参数【加密方式】"));
             }
         }catch (Exception pE){
             return Pair.create(false,new MacResult(pE.getMessage()));
         }
     }
 }
-*/

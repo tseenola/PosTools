@@ -1,4 +1,3 @@
-/*
 package com.tseenola.postools.security.pos.mac;
 
 
@@ -6,10 +5,11 @@ import android.util.Pair;
 
 import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.MacResult;
+import com.tseenola.postools.security.pos.mac.model.MacParam;
 import com.tseenola.postools.security.utils.Constant;
 
 import java.util.Arrays;
-*/
+
 /**
  * Created by lijun on 2017/4/12.
  * 描述：Mac9606算法
@@ -17,11 +17,10 @@ import java.util.Arrays;
  *
  * a) 每8个字节做异或
  * b) 最后异或的结果做一次DES运算
- *//*
-
-public class Mac_9606 implements IMacCaculator{
+ */
+public class Mac_96062 implements IMacCaculator2{
     @Override
-    public Pair<Boolean, MacResult> getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, @Constant.SecurityType int pSecurityType){
+    public Pair<Boolean, MacResult> getMac(MacParam param, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             byte[] buf = new byte[17];
             byte[] tmpbuf = new byte[17];
@@ -44,11 +43,14 @@ public class Mac_9606 implements IMacCaculator{
             for (i = 0; i < l; i++)
                 for (k = 0; k < 8; k++)
                     buf[k] ^= inbuf[i * 8 + k];
-            if (pSecurityType == Constant.SOFT) {
-                macbuf = pSecurity.encryDataSoft(buf,pKeys);
+            if (param.getmSecurityType() == Constant.SOFT) {
+                macbuf = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
+            }else if (param.getmSecurityType() == Constant.HARD){
+                macbuf = pSecurity.encryDataHard(buf,param.getHardEncryParam());
             }else {
-                macbuf = pSecurity.encryDataHard(buf);
+                return Pair.create(false,new MacResult("无效的参数【加密方式】"));
             }
+
             System.arraycopy(macbuf, 0, macOut, 0, 8);
             return Pair.create(true,new MacResult(macOut));
         }catch (Exception pE){
@@ -56,4 +58,3 @@ public class Mac_9606 implements IMacCaculator{
         }
     }
 }
-*/

@@ -1,4 +1,3 @@
-/*
 package com.tseenola.postools.security.pos.mac;
 
 
@@ -6,12 +5,12 @@ import android.util.Pair;
 
 import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.MacResult;
+import com.tseenola.postools.security.pos.mac.model.MacParam;
 import com.tseenola.postools.security.utils.Constant;
 import com.tseenola.postools.security.utils.ConvertUtils;
 
 import java.util.Arrays;
 
-*/
 /**
  * Created by lijun on 2017/4/12.
  * 描述：MacECB算法，银联商务标准算法
@@ -23,11 +22,10 @@ import java.util.Arrays;
  * f) 用异或的结果TEMP BLOCK 再进行一次单倍长密钥算法运算。
  * g) 将运算后的结果（ENC BLOCK2）转换成16 个HEXDECIMAL：
  * h) 取前8个字节作为MAC值。
- *//*
-
-public class Mac_UnionEcb implements IMacCaculator{
+ */
+public class Mac_UnionEcb2 implements IMacCaculator2{
     @Override
-    public Pair<Boolean, MacResult> getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, @Constant.SecurityType int pSecurityType){
+    public Pair<Boolean, MacResult> getMac(MacParam param, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             byte[] buf = new byte[17];
             byte[] tmpbuf = new byte[17];
@@ -57,12 +55,14 @@ public class Mac_UnionEcb implements IMacCaculator{
             tmpbuf[16] = 0;
 
             System.arraycopy(tmpbuf, 0, buf, 0, 8);
-
-            if (pSecurityType == Constant.SOFT) {
-                macbuf = pSecurity.encryDataSoft(buf,pKeys);
+            if (param.getmSecurityType() == Constant.SOFT) {
+                macbuf = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
+            }else if (param.getmSecurityType() == Constant.HARD){
+                macbuf = pSecurity.encryDataHard(buf,param.getHardEncryParam());
             }else {
-                macbuf = pSecurity.encryDataHard(buf);
+                return Pair.create(false,new MacResult("无效的参数【加密方式】"));
             }
+
 
             Arrays.fill(buf, (byte) 0x00);
             System.arraycopy(macbuf, 0, buf, 0, 8);
@@ -72,10 +72,12 @@ public class Mac_UnionEcb implements IMacCaculator{
 
             Arrays.fill(macbuf, (byte) 0x00);
 
-            if (pSecurityType == Constant.SOFT) {
-                macbuf = pSecurity.encryDataSoft(buf,pKeys);
-            }else {
-                macbuf = pSecurity.encryDataHard(buf);
+            if (param.getmSecurityType() == Constant.SOFT){
+                macbuf = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
+            }else if (param.getmSecurityType() == Constant.HARD){
+                macbuf = pSecurity.encryDataHard(buf,param.getHardEncryParam());
+            } else {
+                return Pair.create(false,new MacResult("无效的参数【加密方式】"));
             }
 
             Arrays.fill(buf, (byte) 0x00);
@@ -90,4 +92,3 @@ public class Mac_UnionEcb implements IMacCaculator{
         }
     }
 }
-*/

@@ -40,14 +40,15 @@ public class DesImpl implements ISecurity {
     }
 
     @Override
-    public byte[] encryDataHard(byte[] pNeedEncryData) throws Exception {
+    public byte[] encryDataHard(byte[] pNeedEncryData, Object... obj) throws Exception {
         return new byte[0];
     }
 
     @Override
-    public byte[] decryDataHard(byte[] pNeedEncryData) throws Exception {
+    public byte[] decryDataHard(byte[] pNeedDecryData, Object... obj) throws Exception {
         return new byte[0];
     }
+
 
     /**
      * 检查传入的DES参数是否正确

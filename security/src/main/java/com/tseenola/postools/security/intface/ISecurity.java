@@ -1,5 +1,7 @@
 package com.tseenola.postools.security.intface;
 
+import com.tseenola.postools.security.utils.Constant;
+
 /**
  * Created by lenovo on 2020/7/30.
  * 描述：这个接口主要负责加密算法的调用
@@ -27,12 +29,13 @@ public interface ISecurity {
      * @param pNeedEncryData
      * @throws Exception
      */
-    byte []  encryDataHard(byte [] pNeedEncryData)throws Exception;
+    byte []  encryDataHard(byte [] pNeedEncryData, Object ... obj)throws Exception;
+
     /**
      * 硬解密
      * 调用底层安全芯片进行解密，可能是POS或者是密码键盘
-     * @param pNeedEncryData
+     * @param pNeedDecryData 被解密数据
      * @throws Exception
      */
-    byte []  decryDataHard(byte [] pNeedEncryData)throws Exception;
+    byte []  decryDataHard(byte [] pNeedDecryData, Object ... obj)throws Exception;
 }

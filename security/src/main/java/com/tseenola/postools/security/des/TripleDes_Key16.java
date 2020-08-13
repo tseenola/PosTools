@@ -40,14 +40,15 @@ public class TripleDes_Key16 implements ISecurity {
     }
 
     @Override
-    public byte[] encryDataHard(byte[] pNeedEncryData) throws Exception {
+    public byte[] encryDataHard(byte[] pNeedEncryData, Object... obj) throws Exception {
         return new byte[0];
     }
 
     @Override
-    public byte[] decryDataHard(byte[] pNeedEncryData) throws Exception {
+    public byte[] decryDataHard(byte[] pNeedDecryData, Object... obj) throws Exception {
         return new byte[0];
     }
+
 
     /**
      * 检查传入的3DES（密钥长度16个字节）参数是否正确

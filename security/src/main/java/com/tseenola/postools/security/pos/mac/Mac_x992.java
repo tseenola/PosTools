@@ -1,13 +1,12 @@
-/*
 package com.tseenola.postools.security.pos.mac;
 
 import android.util.Pair;
 
 import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.MacResult;
+import com.tseenola.postools.security.pos.mac.model.MacParam;
 import com.tseenola.postools.security.utils.Constant;
 
-*/
 /**
  * Created by lijun on 2017/4/12.
  * 描述：X9.9MAC算法
@@ -18,11 +17,10 @@ import com.tseenola.postools.security.utils.Constant;
  * (4) 将上一步的加密结果与下一分组异或，然后再用MAC密钥加密。
  * (5) 直至所有分组结束，取最后结果的左半部作为MAC。
  *
- *//*
-
-public class Mac_x99 implements IMacCaculator{
+ */
+public class Mac_x992 implements IMacCaculator2{
     @Override
-    public Pair<Boolean, MacResult> getMac(byte[] pNeedCallMacDatas, byte[] pKeys, ISecurity pSecurity, @Constant.SecurityType int pSecurityType){
+    public Pair<Boolean, MacResult> getMac(MacParam param, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             final int dataLength = pNeedCallMacDatas.length;
             final int lastLength = dataLength % 8;
@@ -39,11 +37,15 @@ public class Mac_x99 implements IMacCaculator{
             byte[] desXor = new byte[8];
             for (int i = 0; i < blockCount; i++) {
                 byte[] tXor = xOr(desXor, dataBlock[i]);
-                if (pSecurityType == Constant.SOFT) {
-                    desXor = pSecurity.encryDataSoft(tXor,pKeys);
+
+                if (param.getmSecurityType() == Constant.SOFT) {
+                    desXor = pSecurity.encryDataSoft(tXor,param.getSoftEncryKeys());
+                }else if (param.getmSecurityType() == Constant.HARD){
+                    desXor = pSecurity.encryDataHard(tXor,param.getHardEncryParam());
                 }else {
-                    desXor = pSecurity.encryDataHard(tXor);
+                    return Pair.create(false,new MacResult("无效的参数【加密方式】"));
                 }
+
             }
             return Pair.create(true,new MacResult(desXor));
         }catch (Exception pE){
@@ -51,14 +53,12 @@ public class Mac_x99 implements IMacCaculator{
         }
     }
 
-    */
-/**
+    /**
      * 将b1和b2做异或，然后返回
      * @param b1
      * @param b2
      * @return 异或结果
-     *//*
-
+     */
     private byte[] xOr(byte[] b1, byte[] b2) {
         byte[] tXor = new byte[Math.min(b1.length, b2.length)];
         for (int i = 0; i < tXor.length; i++)
@@ -66,4 +66,3 @@ public class Mac_x99 implements IMacCaculator{
         return tXor;
     }
 }
-*/

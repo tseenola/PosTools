@@ -5,7 +5,11 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Pair;
 
+import com.tseenola.postools.security.des.DesImpl;
+import com.tseenola.postools.security.pos.mac.Mac_UnionEcb2;
+import com.tseenola.postools.security.pos.mac.model.MacParam;
 import com.tseenola.postools.security.pos.pin.Pin_Union;
+import com.tseenola.postools.security.utils.ConvertUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +27,9 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
-        Pair<Boolean, Pin_Union.Result<String>> pin = new Pin_Union().getPin();
-        pin.second.getT();
+        MacParam lMacParam = new MacParam(ConvertUtils.hexStringToByte("12345678901234567890123456789011"));
+        String needCallMac = "12345678901234567890123456789011";
+        new Mac_UnionEcb2().getMac(lMacParam,ConvertUtils.hexStringToByte(needCallMac),DesImpl.getInstance());
+
     }
 }

@@ -6,31 +6,6 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
 public class DesImpl implements ISecurity {
-    private DesImpl(){}
-    private static DesImpl ins;
-    /**
-     * 软加密用这个做初始化
-     * @param pKey
-     * @return
-     */
-    public static DesImpl getInsSoft(byte[] pKey){
-        if (ins==null) {
-            ins = new DesImpl();
-        }
-        return ins;
-    }
-
-    /**
-     * 硬加密用这个初始化
-     * @return
-     */
-
-    public static DesImpl getInsHard(int pMacKeyIndex){
-        if (ins==null) {
-            ins = new DesImpl();
-        }
-        return ins;
-    }
     /**
      * des软加密
      * @param pNeedEncryData :被加密数据

@@ -15,7 +15,7 @@ public class TripleDes_Key16 implements ISecurity {
         System.arraycopy(pKey, 0, k1, 0, 8);
         System.arraycopy(pKey, 8, k2, 0, 8);
         byte k3 [] = k1;
-        DesImpl lDes = DesImpl.getInstance();
+        DesImpl lDes = new DesImpl();
         byte encypt1 [] = lDes.encryDataSoft(pNeedEncryData,k1);
         byte decypt2 [] = lDes.decryDataSoft(encypt1,k2);
         byte encypt3 [] = lDes.encryDataSoft(decypt2,k3);
@@ -31,7 +31,7 @@ public class TripleDes_Key16 implements ISecurity {
         System.arraycopy(pKey, 0, k1, 0, 8);
         System.arraycopy(pKey, 8, k2, 0, 8);
         byte k3 [] = k1;
-        DesImpl lDes = DesImpl.getInstance();
+        DesImpl lDes = new DesImpl();
         byte decypt3 [] = lDes.decryDataSoft(pNeedEncryData,k3);
         byte encypt2 [] = lDes.encryDataSoft(decypt3,k2);
         byte decypt1 [] = lDes.decryDataSoft(encypt2,k1);

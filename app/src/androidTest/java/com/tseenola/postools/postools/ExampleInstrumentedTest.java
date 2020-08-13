@@ -22,16 +22,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
-        String needCallMacData = "12345678901234567890111234567890";
-        byte [] needCallMac = ConvertUtils.hexStringToByte(needCallMacData);
-        String key = "1111111111111111";
-        byte [] keys = ConvertUtils.hexStringToByte(key);
-        try {
-            byte macResult [] = new Mac_UnionEcb().getMac(needCallMac,keys,DesImpl.getInstance(),2);
-            String result = ConvertUtils.bytesToHexString(macResult);
-            System.out.println("result:"+result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 }

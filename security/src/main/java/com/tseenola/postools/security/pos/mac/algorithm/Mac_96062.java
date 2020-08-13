@@ -1,4 +1,4 @@
-package com.tseenola.postools.security.pos.mac;
+package com.tseenola.postools.security.pos.mac.algorithm;
 
 
 import android.util.Pair;

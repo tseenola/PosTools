@@ -47,9 +47,11 @@ public class Mac_UnionEcb2 implements IMacCaculator2{
             }
 
             buf = new byte[8];
-            for (i = 0; i < l; i++)
-                for (k = 0; k < 8; k++)
+            for (i = 0; i < l; i++) {
+                for (k = 0; k < 8; k++) {
                     buf[k] ^= inbuf[i * 8 + k];
+                }
+            }
 
             ConvertUtils.BcdToAsc(tmpbuf, buf, 16);
             tmpbuf[16] = 0;

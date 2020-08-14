@@ -40,9 +40,11 @@ public class Mac_96062 implements IMacCaculator2{
             }
 
             buf = new byte[8];
-            for (i = 0; i < l; i++)
-                for (k = 0; k < 8; k++)
+            for (i = 0; i < l; i++) {
+                for (k = 0; k < 8; k++) {
                     buf[k] ^= inbuf[i * 8 + k];
+                }
+            }
             if (param.getmSecurityType() == Constant.SOFT) {
                 macbuf = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
             }else if (param.getmSecurityType() == Constant.HARD){

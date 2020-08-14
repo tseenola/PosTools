@@ -1,12 +1,29 @@
 package com.tseenola.postools.security.utils;
 
 import android.support.annotation.IntDef;
-import android.support.annotation.StringDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public class Constant {
+    /**
+     * 算法类型
+     */
+    // DES_ECB
+    public final static byte ALG_DES_ECB = 0x01;
+    // DES_CBC
+    public final static byte ALG_DES_CBC = 0x02;
+    // 国密 ECB
+    public final static byte ALG_SM4_ECB = 0x03;
+    // 国密 CBC
+    public final static byte ALG_SM4_CBC = 0x04;
+
+    @IntDef({ALG_DES_CBC, ALG_DES_ECB, ALG_SM4_CBC, ALG_SM4_ECB})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface AlgType {
+    }
+
+
     /**
      * 加密方式
      */

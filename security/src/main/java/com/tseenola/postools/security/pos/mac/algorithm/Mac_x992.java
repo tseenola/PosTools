@@ -61,8 +61,9 @@ public class Mac_x992 implements IMacCaculator2{
      */
     private byte[] xOr(byte[] b1, byte[] b2) {
         byte[] tXor = new byte[Math.min(b1.length, b2.length)];
-        for (int i = 0; i < tXor.length; i++)
+        for (int i = 0; i < tXor.length; i++) {
             tXor[i] = (byte) (b1[i] ^ b2[i]); // 异或(Xor)
+        }
         return tXor;
     }
 }

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.tseenola.postools.security.pos.mac.model.MacParam;
+import com.tseenola.postools.security.pos.mac.model.SecurityParam;
 import com.tseenola.postools.security.utils.ConvertUtils;
 
 import org.junit.Test;
@@ -21,7 +21,7 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
-        MacParam lMacParam = new MacParam(ConvertUtils.hexStringToByte("12345678901234567890123456789011"));
+        SecurityParam lMacParam = new SecurityParam(ConvertUtils.hexStringToByte("12345678901234567890123456789011"));
         String needCallMac = "12345678901234567890123456789011";
 
 

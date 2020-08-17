@@ -3,8 +3,8 @@ package com.tseenola.postools.security.pos.mac.algorithm;
 import android.util.Pair;
 
 import com.tseenola.postools.security.intface.ISecurity;
-import com.tseenola.postools.security.model.MacResult;
-import com.tseenola.postools.security.pos.mac.model.MacParam;
+import com.tseenola.postools.security.model.EncryResult;
+import com.tseenola.postools.security.pos.mac.model.SecurityParam;
 import com.tseenola.postools.security.utils.Constant;
 
 /**
@@ -20,7 +20,7 @@ import com.tseenola.postools.security.utils.Constant;
  */
 public class Mac_x992 implements IMacCaculator2{
     @Override
-    public Pair<Boolean, MacResult> getMac(MacParam param, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getMac(SecurityParam param, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             final int dataLength = pNeedCallMacDatas.length;
             final int lastLength = dataLength % 8;
@@ -43,13 +43,14 @@ public class Mac_x992 implements IMacCaculator2{
                 }else if (param.getmSecurityType() == Constant.HARD){
                     desXor = pSecurity.encryDataHard(tXor,param.getHardEncryParam());
                 }else {
-                    return Pair.create(false,new MacResult("无效的参数【加密方式】"));
+                    return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
                 }
 
             }
-            return Pair.create(true,new MacResult(desXor));
+            return Pair.create(true,new EncryResult(desXor));
         }catch (Exception pE){
-            return Pair.create(false,new MacResult(pE.getMessage()));
+            pE.printStackTrace();
+            return Pair.create(false,new EncryResult(pE.getMessage()));
         }
     }
 

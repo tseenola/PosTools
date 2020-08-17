@@ -64,4 +64,17 @@ public class Constant {
     @Retention(RetentionPolicy.SOURCE)
     public @interface MacType {
     }
+
+    //=========================================分割线======================================================
+    /**
+     * 磁道类型
+     */
+    //2磁道
+    public static final int TRACK2 = 2;
+    //3磁道
+    public static final int TRACK3 = 3;
+    @IntDef({TRACK2,TRACK3})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface TrackType{}
+
 }

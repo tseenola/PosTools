@@ -3,9 +3,9 @@ package com.tseenola.postools.security.pos.mac.model;
 import com.tseenola.postools.security.utils.Constant;
 
 /**
- * 计算Mac需要传入的参数
+ * 计算Mac/pin/track需要传入的参数
  */
-public class MacParam {
+public class SecurityParam {
     protected @Constant.SecurityType int mSecurityType;
     //软加密的key
     protected byte [] softEncryKeys;
@@ -16,7 +16,7 @@ public class MacParam {
      * 软加密用这个构造函数
      * @param softEncryKeys
      */
-    public MacParam(byte[] softEncryKeys) {
+    public SecurityParam(byte[] softEncryKeys) {
         mSecurityType = Constant.SOFT;
         this.softEncryKeys = softEncryKeys;
     }
@@ -25,7 +25,7 @@ public class MacParam {
      * 硬加密用这个构造函数
      * @param hardEncryParam
      */
-    public MacParam(Object[] hardEncryParam) {
+    public SecurityParam(Object[] hardEncryParam) {
         mSecurityType = Constant.HARD;
         this.hardEncryParam = hardEncryParam;
     }

@@ -1,12 +1,12 @@
 package com.tseenola.postools.security.model;
 
-public class MacResult extends BaseResult{
+public class EncryResult extends BaseResult{
     protected byte [] mac;
-    public MacResult(String pErrMsg){
+    public EncryResult(String pErrMsg){
         super(pErrMsg);
     }
 
-    public MacResult(byte[] pMac) {
+    public EncryResult(byte[] pMac) {
         super("");
         this.mac = pMac;
     }

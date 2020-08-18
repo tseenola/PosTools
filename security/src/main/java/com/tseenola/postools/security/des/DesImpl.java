@@ -1,6 +1,9 @@
 package com.tseenola.postools.security.des;
 
+import android.util.Pair;
+
 import com.tseenola.postools.security.intface.ISecurity;
+import com.tseenola.postools.security.model.EncryResult;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -14,31 +17,44 @@ public class DesImpl implements ISecurity {
      * @throws Exception
      */
     @Override
-    public byte[] encryDataSoft(byte[] pNeedEncryData, byte[] pKey) throws Exception {
-        checkParams(pNeedEncryData ,pKey);
-        SecretKeySpec secretKey = new SecretKeySpec(pKey, "DES");
-        Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-        return cipher.doFinal(pNeedEncryData);
+    public Pair<Boolean, EncryResult> encryDataSoft(byte[] pNeedEncryData, byte[] pKey) throws Exception {
+        try{
+            checkParams(pNeedEncryData ,pKey);
+            SecretKeySpec secretKey = new SecretKeySpec(pKey, "DES");
+            Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            byte result [] = cipher.doFinal(pNeedEncryData);
+            return Pair.create(true,new EncryResult(result));
+        }catch(Exception pE){
+            pE.printStackTrace();
+            return Pair.create(false,new EncryResult(pE.getMessage()));
+        }
     }
 
     @Override
-    public byte[] decryDataSoft(byte[] pNeedEncryData, byte[] pKey) throws Exception {
-        checkParams(pNeedEncryData ,pKey);
-        SecretKeySpec secretKey = new SecretKeySpec(pKey, "DES");
-        Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
-        cipher.init(Cipher.DECRYPT_MODE, secretKey);
-        return cipher.doFinal(pNeedEncryData);
+    public Pair<Boolean, EncryResult> decryDataSoft(byte[] pNeedEncryData, byte[] pKey) throws Exception {
+        try{
+            checkParams(pNeedEncryData ,pKey);
+            SecretKeySpec secretKey = new SecretKeySpec(pKey, "DES");
+            Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            byte result [] = cipher.doFinal(pNeedEncryData);
+            return Pair.create(true,new EncryResult(result));
+        }catch(Exception pE){
+            pE.printStackTrace();
+            return Pair.create(false,new EncryResult(pE.getMessage()));
+        }
+
     }
 
     @Override
-    public byte[] encryDataHard(byte[] pNeedEncryData, Object... obj) throws Exception {
-        throw new IllegalStateException("硬件加/解密需要自己继承并实现");
+    public Pair<Boolean, EncryResult> encryDataHard(byte[] pNeedEncryData, Object... obj) throws Exception {
+        return Pair.create(false,new EncryResult("硬件加/解密需要你自己继承此类并覆写此函数"));
     }
 
     @Override
-    public byte[] decryDataHard(byte[] pNeedDecryData, Object... obj) throws Exception {
-        throw new IllegalStateException("硬件加/解密需要自己继承并实现");
+    public Pair<Boolean, EncryResult> decryDataHard(byte[] pNeedDecryData, Object... obj) throws Exception {
+        return Pair.create(false,new EncryResult("硬件加/解密需要你自己继承此类并覆写此函数"));
     }
 
 

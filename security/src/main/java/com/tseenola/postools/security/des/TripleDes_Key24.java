@@ -1,6 +1,9 @@
 package com.tseenola.postools.security.des;
 
+import android.util.Pair;
+
 import com.tseenola.postools.security.intface.ISecurity;
+import com.tseenola.postools.security.model.EncryResult;
 
 /**
  * 3DES
@@ -10,51 +13,81 @@ public class TripleDes_Key24 implements ISecurity {
 
 
     @Override
-    public byte[] encryDataSoft(byte[] pNeedEncryData, byte[] pKey) throws Exception {
-        checkParams24(pNeedEncryData ,pKey);
+    public Pair<Boolean, EncryResult> encryDataSoft(byte[] pNeedEncryData, byte[] pKey) throws Exception {
+        try{
+            checkParams24(pNeedEncryData ,pKey);
 
-        byte k1[] = new byte [8];
-        byte k2[] = new byte [8];
-        byte k3[] = new byte [8];
-        System.arraycopy(pKey, 0, k1, 0, 8);
-        System.arraycopy(pKey, 8, k2, 0, 8);
-        System.arraycopy(pKey, 16,k3, 0, 8);
+            byte k1[] = new byte [8];
+            byte k2[] = new byte [8];
+            byte k3[] = new byte [8];
+            System.arraycopy(pKey, 0, k1, 0, 8);
+            System.arraycopy(pKey, 8, k2, 0, 8);
+            System.arraycopy(pKey, 16,k3, 0, 8);
 
-        DesImpl lDes = new DesImpl();
-        byte encypt1 [] = lDes.encryDataSoft(pNeedEncryData,k1);
-        byte decypt2 [] = lDes.decryDataSoft(encypt1,k2);
-        byte encypt3 [] = lDes.encryDataSoft(decypt2,k3);
-
-        return encypt3;
+            DesImpl lDes = new DesImpl();
+            //1、使用 k1 加密
+            Pair<Boolean, EncryResult> lEncryResultPair = lDes.encryDataSoft(pNeedEncryData,k1);
+            if (!lEncryResultPair.first) {
+                return lEncryResultPair;
+            }
+            byte encypt1 [] = lEncryResultPair.second.getEncryDecryResult();
+            //2、使用 k2 对k1加密结果解密
+            lEncryResultPair = lDes.decryDataSoft(encypt1,k2);
+            if (!lEncryResultPair.first) {
+                return lEncryResultPair;
+            }
+            byte decypt2 [] = lEncryResultPair.second.getEncryDecryResult();
+            //3、使用 k3 对k2 解密结果进行加密
+            lEncryResultPair = lDes.encryDataSoft(decypt2,k3);
+            return lEncryResultPair;
+        }catch(Exception pE){
+            pE.printStackTrace();
+            return Pair.create(false,new EncryResult(pE.getMessage()));
+        }
     }
 
     @Override
-    public byte[] decryDataSoft(byte[] pNeedEncryData, byte[] pKey) throws Exception {
-        checkParams24(pNeedEncryData,pKey);
+    public Pair<Boolean, EncryResult> decryDataSoft(byte[] pNeedEncryData, byte[] pKey) throws Exception {
+        try{
+            checkParams24(pNeedEncryData,pKey);
 
-        byte k1[] = new byte [8];
-        byte k2[] = new byte [8];
-        byte k3[] = new byte [8];
-        System.arraycopy(pKey, 0, k1, 0, 8);
-        System.arraycopy(pKey, 8, k2, 0, 8);
-        System.arraycopy(pKey, 16,k3, 0, 8);
+            byte k1[] = new byte [8];
+            byte k2[] = new byte [8];
+            byte k3[] = new byte [8];
+            System.arraycopy(pKey, 0, k1, 0, 8);
+            System.arraycopy(pKey, 8, k2, 0, 8);
+            System.arraycopy(pKey, 16,k3, 0, 8);
 
-        DesImpl lDes = new DesImpl();
-        byte decypt3 [] = lDes.decryDataSoft(pNeedEncryData,k3);
-        byte encypt2 [] = lDes.encryDataSoft(decypt3,k2);
-        byte decypt1 [] = lDes.decryDataSoft(encypt2,k1);
-
-        return decypt1;
+            DesImpl lDes = new DesImpl();
+            //1、使用k3对数据进行解密
+            Pair<Boolean, EncryResult> lEncryResultPair = lDes.decryDataSoft(pNeedEncryData,k3);
+            if (!lEncryResultPair.first) {
+                return lEncryResultPair;
+            }
+            byte decypt3 [] = lEncryResultPair.second.getEncryDecryResult();
+            //2、使用k2对 k3 解密数据进行加密
+            lEncryResultPair = lDes.encryDataSoft(decypt3,k2);
+            if (!lEncryResultPair.first) {
+                return lEncryResultPair;
+            }
+            byte encypt2 [] = lEncryResultPair.second.getEncryDecryResult();
+            //3、使用k1 对 k2加密数据进行解密
+            lEncryResultPair = lDes.decryDataSoft(encypt2,k1);
+            return lEncryResultPair;
+        }catch(Exception pE){
+            pE.printStackTrace();
+            return Pair.create(false,new EncryResult(pE.getMessage()));
+        }
     }
 
     @Override
-    public byte[] encryDataHard(byte[] pNeedEncryData, Object... obj) throws Exception {
-        throw new IllegalStateException("硬件加/解密需要自己继承并实现");
+    public Pair<Boolean, EncryResult> encryDataHard(byte[] pNeedEncryData, Object... obj) throws Exception {
+        return Pair.create(false,new EncryResult("硬件加/解密需要你自己继承此类并覆写此函数"));
     }
 
     @Override
-    public byte[] decryDataHard(byte[] pNeedDecryData, Object... obj) throws Exception {
-        throw new IllegalStateException("硬件加/解密需要自己继承并实现");
+    public Pair<Boolean, EncryResult> decryDataHard(byte[] pNeedDecryData, Object... obj) throws Exception {
+        return Pair.create(false,new EncryResult("硬件加/解密需要你自己继承此类并覆写此函数"));
     }
 
 

@@ -38,13 +38,18 @@ public class Track_Union implements ITrackCaculator{
             String encryTemp = getEncryTrackData(src, pTrackType);
             //4  采用双倍长密钥TDK分别对TDB2，TDB3进行加密，将密文输出后按照对应位置替换原先的明文数据。
             byte[] encryOut = new byte[8];
+            Pair<Boolean, EncryResult> lEncryResultPair = null;
             if (param.getmSecurityType() == Constant.SOFT) {
-                encryOut = pSecurity.encryDataSoft(ConvertUtils.hexStringToByte(encryTemp),param.getSoftEncryKeys());
+                lEncryResultPair = pSecurity.encryDataSoft(ConvertUtils.hexStringToByte(encryTemp),param.getSoftEncryKeys());
             }else if (param.getmSecurityType() == Constant.HARD){
-                encryOut = pSecurity.encryDataHard(ConvertUtils.hexStringToByte(encryTemp),param.getHardEncryParam());
+                lEncryResultPair = pSecurity.encryDataHard(ConvertUtils.hexStringToByte(encryTemp),param.getHardEncryParam());
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
             }
+            if (!lEncryResultPair.first) {
+                return lEncryResultPair;
+            }
+            encryOut = lEncryResultPair.second.getEncryDecryResult();
             String trackEnryData = src.replaceFirst(encryTemp,ConvertUtils.bytesToHexString(encryOut));
             return Pair.create(true,new EncryResult(ConvertUtils.hexStringToByte(trackEnryData)));
         }catch(Exception pE){

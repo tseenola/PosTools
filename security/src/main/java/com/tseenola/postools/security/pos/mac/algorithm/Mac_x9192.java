@@ -43,13 +43,22 @@ public class Mac_x9192 implements IMacCaculator2{
                 return macX99;
             }
 
-            byte[] result99 = macX99.second.getMac();
+            byte[] result99 = macX99.second.getEncryDecryResult();
+            Pair<Boolean, EncryResult> lEncryResultPair = null;
             if (param.getmSecurityType() == Constant.SOFT) {
-                byte[] resultTemp = pSecurity.decryDataSoft(result99,keyRight);
-                return Pair.create(true,new EncryResult(pSecurity.encryDataSoft(resultTemp,keyLeft)));
+                lEncryResultPair = pSecurity.decryDataSoft(result99,keyRight);
+                if (!lEncryResultPair.first) {
+                    return lEncryResultPair;
+                }
+                byte[] resultTemp = lEncryResultPair.second.getEncryDecryResult();
+                return pSecurity.encryDataSoft(resultTemp,keyLeft);
             }else if (param.getmSecurityType() == Constant.HARD) {
-                byte[] resultTemp = pSecurity.decryDataHard(result99);
-                return Pair.create(true,new EncryResult(pSecurity.encryDataHard(resultTemp)));
+                lEncryResultPair = pSecurity.decryDataHard(result99);
+                if (!lEncryResultPair.first) {
+                    return lEncryResultPair;
+                }
+                byte[] resultTemp = lEncryResultPair.second.getEncryDecryResult();
+                return pSecurity.encryDataHard(resultTemp);
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
             }

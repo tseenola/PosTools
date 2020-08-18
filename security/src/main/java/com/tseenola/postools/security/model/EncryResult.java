@@ -1,21 +1,21 @@
 package com.tseenola.postools.security.model;
 
 public class EncryResult extends BaseResult{
-    protected byte [] mac;
+    protected byte [] encryDecryResult;
     public EncryResult(String pErrMsg){
         super(pErrMsg);
     }
 
-    public EncryResult(byte[] pMac) {
+    public EncryResult(byte[] pEncryDecryResult) {
         super("");
-        this.mac = pMac;
+        this.encryDecryResult = pEncryDecryResult;
     }
 
-    public byte[] getMac() {
-        return mac;
+    public byte[] getEncryDecryResult() {
+        return encryDecryResult;
     }
 
-    public void setMac(byte[] mac) {
-        this.mac = mac;
+    public void setEncryDecryResult(byte[] pEncryDecryResult) {
+        this.encryDecryResult = pEncryDecryResult;
     }
 }

@@ -57,14 +57,20 @@ public class Mac_UnionEcb2 implements IMacCaculator2{
             tmpbuf[16] = 0;
 
             System.arraycopy(tmpbuf, 0, buf, 0, 8);
+            Pair<Boolean, EncryResult> lEncryResultPair = null;
             if (param.getmSecurityType() == Constant.SOFT) {
-                macbuf = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
+                lEncryResultPair = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
+                //macbuf = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
             }else if (param.getmSecurityType() == Constant.HARD){
-                macbuf = pSecurity.encryDataHard(buf,param.getHardEncryParam());
+                lEncryResultPair = pSecurity.encryDataHard(buf,param.getHardEncryParam());
+                //macbuf = pSecurity.encryDataHard(buf,param.getHardEncryParam());
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
             }
-
+            if (!lEncryResultPair.first) {
+                return lEncryResultPair;
+            }
+            macbuf = lEncryResultPair.second.getEncryDecryResult();
 
             Arrays.fill(buf, (byte) 0x00);
             System.arraycopy(macbuf, 0, buf, 0, 8);
@@ -76,12 +82,18 @@ public class Mac_UnionEcb2 implements IMacCaculator2{
             Arrays.fill(macbuf, (byte) 0x00);
 
             if (param.getmSecurityType() == Constant.SOFT){
-                macbuf = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
+                lEncryResultPair = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
+                //macbuf = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
             }else if (param.getmSecurityType() == Constant.HARD){
-                macbuf = pSecurity.encryDataHard(buf,param.getHardEncryParam());
+                lEncryResultPair = pSecurity.encryDataHard(buf,param.getHardEncryParam());
+                //macbuf = pSecurity.encryDataHard(buf,param.getHardEncryParam());
             } else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
             }
+            if (!lEncryResultPair.first) {
+                return lEncryResultPair;
+            }
+            macbuf = lEncryResultPair.second.getEncryDecryResult();
 
             Arrays.fill(buf, (byte) 0x00);
             System.arraycopy(macbuf, 0, buf, 0, 8);

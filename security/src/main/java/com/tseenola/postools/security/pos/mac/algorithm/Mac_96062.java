@@ -45,14 +45,18 @@ public class Mac_96062 implements IMacCaculator2{
                     buf[k] ^= inbuf[i * 8 + k];
                 }
             }
+            Pair<Boolean, EncryResult> lEncryResultPair = null;
             if (param.getmSecurityType() == Constant.SOFT) {
-                macbuf = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
+                lEncryResultPair = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
             }else if (param.getmSecurityType() == Constant.HARD){
-                macbuf = pSecurity.encryDataHard(buf,param.getHardEncryParam());
+                lEncryResultPair = pSecurity.encryDataHard(buf,param.getHardEncryParam());
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
             }
-
+            if (!lEncryResultPair.first) {
+                return lEncryResultPair;
+            }
+            macbuf = lEncryResultPair.second.getEncryDecryResult();
             System.arraycopy(macbuf, 0, macOut, 0, 8);
             return Pair.create(true,new EncryResult(macOut));
         }catch (Exception pE){

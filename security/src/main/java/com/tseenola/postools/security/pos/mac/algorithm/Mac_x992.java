@@ -35,17 +35,20 @@ public class Mac_x992 implements IMacCaculator2{
             }
 
             byte[] desXor = new byte[8];
+            Pair<Boolean, EncryResult> lEncryResultPair = null;
             for (int i = 0; i < blockCount; i++) {
                 byte[] tXor = xOr(desXor, dataBlock[i]);
-
                 if (param.getmSecurityType() == Constant.SOFT) {
-                    desXor = pSecurity.encryDataSoft(tXor,param.getSoftEncryKeys());
+                    lEncryResultPair = pSecurity.encryDataSoft(tXor,param.getSoftEncryKeys());
                 }else if (param.getmSecurityType() == Constant.HARD){
-                    desXor = pSecurity.encryDataHard(tXor,param.getHardEncryParam());
+                    lEncryResultPair = pSecurity.encryDataHard(tXor,param.getHardEncryParam());
                 }else {
                     return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
                 }
-
+                if (!lEncryResultPair.first) {
+                    return lEncryResultPair;
+                }
+                desXor = lEncryResultPair.second.getEncryDecryResult();
             }
             return Pair.create(true,new EncryResult(desXor));
         }catch (Exception pE){

@@ -48,13 +48,12 @@ public class Pin_Union implements IPinCaculator{
             //4 对亦或后的结果进行3DES加密
             byte pinEncResult_b [] = new byte[8];
             if (param.getmSecurityType() == Constant.SOFT) {
-                pinEncResult_b = pSecurity.encryDataSoft(xorResult,param.getSoftEncryKeys());
+                return pSecurity.encryDataSoft(xorResult,param.getSoftEncryKeys());
             }else if (param.getmSecurityType() == Constant.HARD){
-                pinEncResult_b = pSecurity.encryDataHard(xorResult,param.getHardEncryParam());
+                return pSecurity.encryDataHard(xorResult,param.getHardEncryParam());
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
             }
-            return Pair.create(true,new EncryResult(pinEncResult_b));
         }catch(Exception pE){
             pE.printStackTrace();
             return Pair.create(false,new EncryResult(pE.getMessage()));

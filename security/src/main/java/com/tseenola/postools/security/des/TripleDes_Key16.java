@@ -1,7 +1,6 @@
 package com.tseenola.postools.security.des;
 
 import com.tseenola.postools.security.intface.ISecurity;
-import com.tseenola.postools.security.proxy.SeManagerProxy;
 
 /**
  * 3DES
@@ -42,36 +41,13 @@ public class TripleDes_Key16 implements ISecurity {
 
     @Override
     public byte[] encryDataHard(byte[] pNeedEncryData, Object... obj) throws Exception {
-        SeManagerProxy.getInstance().doEncry(
-                (int)obj[0],
-                (int)obj[1],
-                (int)obj[2],
-                (byte[])obj[3],
-                (int)obj[4],
-                (int)obj[5],
-                pNeedEncryData,
-                pNeedEncryData.length,
-                (byte[])obj[6],
-                (byte[])obj[7]);
-        return new byte[0];
+        throw new IllegalStateException("硬件加/解密需要自己继承并实现");
     }
 
     @Override
     public byte[] decryDataHard(byte[] pNeedDecryData, Object... obj) throws Exception {
-        SeManagerProxy.getInstance().doEncry(
-                (int)obj[0],
-                (int)obj[1],
-                (int)obj[2],
-                (byte[])obj[3],
-                (int)obj[4],
-                (int)obj[5],
-                pNeedDecryData,
-                pNeedDecryData.length,
-                (byte[])obj[6],
-                (byte[])obj[7]);
-        return new byte[0];
+        throw new IllegalStateException("硬件加/解密需要自己继承并实现");
     }
-
 
     /**
      * 检查传入的3DES（密钥长度16个字节）参数是否正确

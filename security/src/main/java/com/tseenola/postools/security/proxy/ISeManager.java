@@ -1,27 +1,12 @@
 package com.tseenola.postools.security.proxy;
 
-import android.device.SEManager;
-
 import com.tseenola.postools.security.utils.Constant;
 
 /**
- * Created by lenovo on 2020/8/14.
+ * Created by lenovo on 2020/8/18.
  * 描述：
  */
-public class SeManagerProxy {
-    private static SeManagerProxy instance;
-    private SEManager seMgr;
-
-    private SeManagerProxy() {
-        seMgr = new SEManager();
-    }
-
-    public static synchronized SeManagerProxy getInstance() {
-        if (instance == null) {
-            instance = new SeManagerProxy();
-        }
-        return instance;
-    }
+public interface ISeManager {
     /**
      * 用指定的密钥号做加密
      * tips
@@ -41,17 +26,15 @@ public class SeManagerProxy {
      * @return
      */
     public int doEncry(int KeyUsage,
-                           int KeyNo,
-                           @Constant.AlgType int Algorithm,
-                           byte[] StartValue,
-                           int StartValueLen,
-                           int PaddingChar,
-                           byte[] EncryptData,
-                           int EncryptDataLen,
-                           byte[] ResponseData,
-                           byte[] ResponseDataLen){
-        return seMgr.encryptData(KeyUsage, KeyNo, Algorithm, StartValue, StartValueLen, PaddingChar, EncryptData, EncryptDataLen, ResponseData, ResponseDataLen);
-    }
+                       int KeyNo,
+                       @Constant.AlgType int Algorithm,
+                       byte[] StartValue,
+                       int StartValueLen,
+                       int PaddingChar,
+                       byte[] EncryptData,
+                       int EncryptDataLen,
+                       byte[] ResponseData,
+                       byte[] ResponseDataLen);
 
     /**
      * 用指定的密钥号做解密
@@ -72,15 +55,13 @@ public class SeManagerProxy {
      * @return
      */
     public int doDecry(int KeyUsage,
-                              int KeyNo,
-                              @Constant.AlgType int Algorithm,
-                              byte[] StartValue,
-                              int StartValueLen,
-                              int PaddingChar,
-                              byte[] EncryptData,
-                              int EncryptDataLen,
-                              byte[] ResponseData,
-                              byte[] ResponseDataLen){
-        return seMgr.decryptData(KeyUsage, KeyNo, Algorithm, StartValue, StartValueLen, PaddingChar, EncryptData, EncryptDataLen, ResponseData, ResponseDataLen);
-    }
+                       int KeyNo,
+                       @Constant.AlgType int Algorithm,
+                       byte[] StartValue,
+                       int StartValueLen,
+                       int PaddingChar,
+                       byte[] EncryptData,
+                       int EncryptDataLen,
+                       byte[] ResponseData,
+                       byte[] ResponseDataLen);
 }

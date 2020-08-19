@@ -90,13 +90,15 @@ public class TripleDes_Key16<T> implements ISecurity<T> {
      * @param pKey
      */
     protected void checkParams16(byte[] pData , byte[] pKey){
-        if (pKey == null || pData == null) {
-            throw new IllegalArgumentException("参数不能为空");
+        if (pData==null) {
+            throw new IllegalArgumentException("DES运算加解密数据不能为空");
+        }
+        if (pKey == null) {
+            throw new IllegalArgumentException("DES运算密钥不能为空");
         }
         if(pKey.length != 16){
             throw new IllegalArgumentException("checkParams16 3Des密钥长度应该是16字节");
         }
-
         if(pData.length %8 != 0){
             throw new IllegalArgumentException("被加密数据的长度应该为8的倍数");
         }

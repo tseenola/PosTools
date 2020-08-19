@@ -65,15 +65,17 @@ public class DesImpl<T> implements ISecurity<T> {
      * @param pKey
      */
     protected void checkParams(byte[] pData ,byte[] pKey){
-        if (pKey == null || pData == null) {
-            throw new IllegalArgumentException("参数不能为空");
+        if (pData==null) {
+            throw new IllegalArgumentException("DES运算加解密数据不能为空");
+        }
+        if (pKey == null) {
+            throw new IllegalArgumentException("DES运算密钥不能为空");
+        }
+        if (pData.length%8 != 0){
+            throw new IllegalArgumentException("被加密数据长度必须为8的倍数");
         }
         if (pKey.length!=8){
             throw new IllegalArgumentException("密钥长度必须为8的倍数");
-        }
-
-        if (pData.length%8 != 0){
-            throw new IllegalArgumentException("被加密数据长度必须为8的倍数");
         }
     }
 }

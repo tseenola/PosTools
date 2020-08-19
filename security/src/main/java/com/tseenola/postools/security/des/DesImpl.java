@@ -8,7 +8,7 @@ import com.tseenola.postools.security.model.EncryResult;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-public class DesImpl implements ISecurity {
+public class DesImpl<T> implements ISecurity<T> {
     /**
      * des软加密
      * @param pNeedEncryData :被加密数据
@@ -48,12 +48,12 @@ public class DesImpl implements ISecurity {
     }
 
     @Override
-    public Pair<Boolean, EncryResult> encryDataHard(byte[] pNeedEncryData, Object... obj) throws Exception {
+    public Pair<Boolean, EncryResult> encryDataHard(byte[] pNeedEncryData, T hardEncryParam) throws Exception {
         return Pair.create(false,new EncryResult("硬件加/解密需要你自己继承此类并覆写此函数"));
     }
 
     @Override
-    public Pair<Boolean, EncryResult> decryDataHard(byte[] pNeedDecryData, Object... obj) throws Exception {
+    public Pair<Boolean, EncryResult> decryDataHard(byte[] pNeedDecryData, T hardDecryParam) throws Exception {
         return Pair.create(false,new EncryResult("硬件加/解密需要你自己继承此类并覆写此函数"));
     }
 

@@ -9,7 +9,7 @@ import com.tseenola.postools.security.model.EncryResult;
  * 3DES
  * 密钥长度16字节
  */
-public class TripleDes_Key16 implements ISecurity {
+public class TripleDes_Key16<T> implements ISecurity<T> {
     @Override
     public Pair<Boolean, EncryResult> encryDataSoft(byte[] pNeedEncryData, byte[] pKey) throws Exception {
         try{
@@ -74,13 +74,13 @@ public class TripleDes_Key16 implements ISecurity {
     }
 
     @Override
-    public Pair<Boolean, EncryResult> encryDataHard(byte[] pNeedEncryData, Object... obj) throws Exception {
+    public Pair<Boolean, EncryResult> encryDataHard(byte[] pNeedEncryData, T hardEncryParam) throws Exception {
         return Pair.create(false,new EncryResult("硬件加/解密需要你自己继承此类并覆写此函数"));
 
     }
 
     @Override
-    public Pair<Boolean, EncryResult> decryDataHard(byte[] pNeedDecryData, Object... obj) throws Exception {
+    public Pair<Boolean, EncryResult> decryDataHard(byte[] pNeedDecryData, T hardDecryParam) throws Exception {
         return Pair.create(false,new EncryResult("硬件加/解密需要你自己继承此类并覆写此函数"));
     }
 

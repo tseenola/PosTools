@@ -4,7 +4,6 @@ import android.util.Pair;
 
 import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.EncryResult;
-import com.tseenola.postools.security.pos.mac.model.SecurityParam;
 import com.tseenola.postools.security.utils.Constant;
 
 /**
@@ -18,9 +17,23 @@ import com.tseenola.postools.security.utils.Constant;
  * (5) 直至所有分组结束，取最后结果的左半部作为MAC。
  *
  */
-public class Mac_x992 implements IMacCaculator2{
+public class Mac_x992<T> implements IMacCaculator2<T>{
+    /**
+     * 将b1和b2做异或，然后返回
+     * @param b1
+     * @param b2
+     * @return 异或结果
+     */
+    private byte[] xOr(byte[] b1, byte[] b2) {
+        byte[] tXor = new byte[Math.min(b1.length, b2.length)];
+        for (int i = 0; i < tXor.length; i++) {
+            tXor[i] = (byte) (b1[i] ^ b2[i]); // 异或(Xor)
+        }
+        return tXor;
+    }
+
     @Override
-    public Pair<Boolean, EncryResult> getMac(SecurityParam param, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getMac(int pSecurityType, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             final int dataLength = pNeedCallMacDatas.length;
             final int lastLength = dataLength % 8;
@@ -38,10 +51,10 @@ public class Mac_x992 implements IMacCaculator2{
             Pair<Boolean, EncryResult> lEncryResultPair = null;
             for (int i = 0; i < blockCount; i++) {
                 byte[] tXor = xOr(desXor, dataBlock[i]);
-                if (param.getmSecurityType() == Constant.SOFT) {
-                    lEncryResultPair = pSecurity.encryDataSoft(tXor,param.getSoftEncryKeys());
-                }else if (param.getmSecurityType() == Constant.HARD){
-                    lEncryResultPair = pSecurity.encryDataHard(tXor,param.getHardEncryParam());
+                if (pSecurityType == Constant.SOFT) {
+                    lEncryResultPair = pSecurity.encryDataSoft(tXor,pEncDecKey);
+                }else if (pSecurityType == Constant.HARD){
+                    lEncryResultPair = pSecurity.encryDataHard(tXor,pSecurityHardParam);
                 }else {
                     return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
                 }
@@ -55,19 +68,5 @@ public class Mac_x992 implements IMacCaculator2{
             pE.printStackTrace();
             return Pair.create(false,new EncryResult(pE.getMessage()));
         }
-    }
-
-    /**
-     * 将b1和b2做异或，然后返回
-     * @param b1
-     * @param b2
-     * @return 异或结果
-     */
-    private byte[] xOr(byte[] b1, byte[] b2) {
-        byte[] tXor = new byte[Math.min(b1.length, b2.length)];
-        for (int i = 0; i < tXor.length; i++) {
-            tXor[i] = (byte) (b1[i] ^ b2[i]); // 异或(Xor)
-        }
-        return tXor;
     }
 }

@@ -4,7 +4,6 @@ import android.util.Pair;
 
 import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.EncryResult;
-import com.tseenola.postools.security.pos.mac.model.SecurityParam;
 import com.tseenola.postools.security.utils.Constant;
 import com.tseenola.postools.security.utils.ConvertUtils;
 
@@ -17,10 +16,9 @@ import com.tseenola.postools.security.utils.ConvertUtils;
  * 3 卡号和密码做亦或运算
  * 4 对亦或后的结果进行3DES加密
  */
-public class Pin_Union implements IPinCaculator{
-
+public class Pin_Union<T> implements IPinCaculator<T>{
     @Override
-    public Pair<Boolean, EncryResult> getEncryedPin(SecurityParam param, String pPan, String pExplainPin, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getEncryedPin(int pSecurityType, byte[] pEncDecKey, T pSecurityHardParam, String pPan, String pExplainPin, ISecurity pSecurity) {
         try{
             //1 卡号从右边第二个字符向左取12位，前面补4个0，组成16位16进制字符。
             String inputtedCardNo = pPan;
@@ -46,11 +44,10 @@ public class Pin_Union implements IPinCaculator{
                 xorResult[i] = (byte) (cardno_b[i] ^ pint_b[i]);
             }
             //4 对亦或后的结果进行3DES加密
-            byte pinEncResult_b [] = new byte[8];
-            if (param.getmSecurityType() == Constant.SOFT) {
-                return pSecurity.encryDataSoft(xorResult,param.getSoftEncryKeys());
-            }else if (param.getmSecurityType() == Constant.HARD){
-                return pSecurity.encryDataHard(xorResult,param.getHardEncryParam());
+            if (pSecurityType == Constant.SOFT) {
+                return pSecurity.encryDataSoft(xorResult,pEncDecKey);
+            }else if (pSecurityType == Constant.HARD){
+                return pSecurity.encryDataHard(xorResult,pSecurityHardParam);
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
             }

@@ -9,7 +9,7 @@ import com.tseenola.postools.security.model.EncryResult;
  * 描述：这个接口主要负责加密算法的调用
  * 例如 DES,3DES,SM4 and so on
  */
-public interface ISecurity {
+public interface ISecurity<T> {
     /**
      * 软加密
      * 自己实现加密
@@ -29,19 +29,19 @@ public interface ISecurity {
      * 硬加密
      * 调用底层安全芯片进行加密，可能是POS或者是密码键盘
      * @param pNeedEncryData 被加密的数据
-     * @param obj             硬件加密需要传入的参数
+     * @param hardEncryParam             硬件加密需要传入的参数
      * @return
      * @throws Exception
      */
-    Pair<Boolean, EncryResult> encryDataHard(byte [] pNeedEncryData, Object ... obj)throws Exception;
+    Pair<Boolean, EncryResult> encryDataHard(byte [] pNeedEncryData, T hardEncryParam)throws Exception;
 
     /**
      * 硬解密
      * 调用底层安全芯片进行解密，可能是POS或者是密码键盘
      * @param pNeedDecryData   被解密数据
-     * @param obj               硬件解密需要传入的参数
+     * @param hardDecryParam               硬件解密需要传入的参数
      * @return
      * @throws Exception
      */
-    Pair<Boolean, EncryResult> decryDataHard(byte [] pNeedDecryData, Object ... obj)throws Exception;
+    Pair<Boolean, EncryResult> decryDataHard(byte [] pNeedDecryData, T hardDecryParam)throws Exception;
 }

@@ -5,7 +5,6 @@ import android.util.Pair;
 
 import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.EncryResult;
-import com.tseenola.postools.security.pos.mac.model.SecurityParam;
 import com.tseenola.postools.security.utils.Constant;
 
 /**
@@ -23,42 +22,42 @@ import com.tseenola.postools.security.utils.Constant;
  *    (7)      用MAC密钥左半部加密(6)的结果。
  *    (8)      取(7)的结果的左半部作为MAC。
  */
-public class Mac_x9192 implements IMacCaculator2{
+public class Mac_x9192<T> implements IMacCaculator2<T>{
     @Override
-    public Pair<Boolean, EncryResult> getMac(SecurityParam param, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getMac(int pSecurityType, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             Pair<Boolean, EncryResult> macX99 = null;
             byte[] keyLeft = new byte[8];
             byte[] keyRight = new byte[8];
-            if (param.getmSecurityType() == Constant.SOFT) {
-                System.arraycopy(param.getSoftEncryKeys(), 0, keyLeft, 0, 8);
-                System.arraycopy(param.getSoftEncryKeys(), 8, keyRight, 0, 8);
-            }else if (param.getmSecurityType() == Constant.HARD) {
+            if (pSecurityType == Constant.SOFT) {
+                System.arraycopy(pEncDecKey, 0, keyLeft, 0, 8);
+                System.arraycopy(pEncDecKey, 8, keyRight, 0, 8);
+            }else if (pSecurityType == Constant.HARD) {
 
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
             }
-            macX99 = new Mac_x992().getMac(param, pNeedCallMacDatas, pSecurity);
+            macX99 = new Mac_x992().getMac(pSecurityType,pEncDecKey, pSecurityHardParam,pNeedCallMacDatas, pSecurity);
             if (!macX99.first) {
                 return macX99;
             }
 
             byte[] result99 = macX99.second.getEncryDecryResult();
             Pair<Boolean, EncryResult> lEncryResultPair = null;
-            if (param.getmSecurityType() == Constant.SOFT) {
+            if (pSecurityType == Constant.SOFT) {
                 lEncryResultPair = pSecurity.decryDataSoft(result99,keyRight);
                 if (!lEncryResultPair.first) {
                     return lEncryResultPair;
                 }
                 byte[] resultTemp = lEncryResultPair.second.getEncryDecryResult();
                 return pSecurity.encryDataSoft(resultTemp,keyLeft);
-            }else if (param.getmSecurityType() == Constant.HARD) {
-                lEncryResultPair = pSecurity.decryDataHard(result99);
+            }else if (pSecurityType == Constant.HARD) {
+                lEncryResultPair = pSecurity.decryDataHard(result99,pSecurityHardParam);
                 if (!lEncryResultPair.first) {
                     return lEncryResultPair;
                 }
                 byte[] resultTemp = lEncryResultPair.second.getEncryDecryResult();
-                return pSecurity.encryDataHard(resultTemp);
+                return pSecurity.encryDataHard(resultTemp,pSecurityHardParam);
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
             }

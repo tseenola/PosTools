@@ -5,7 +5,6 @@ import android.util.Pair;
 
 import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.EncryResult;
-import com.tseenola.postools.security.pos.mac.model.SecurityParam;
 import com.tseenola.postools.security.utils.Constant;
 
 import java.util.Arrays;
@@ -18,9 +17,9 @@ import java.util.Arrays;
  * a) 每8个字节做异或
  * b) 最后异或的结果做一次DES运算
  */
-public class Mac_96062 implements IMacCaculator2{
+public class Mac_96062<T> implements IMacCaculator2<T>{
     @Override
-    public Pair<Boolean, EncryResult> getMac(SecurityParam param, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getMac(int pSecurityType, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             byte[] buf = new byte[17];
             byte[] tmpbuf = new byte[17];
@@ -46,10 +45,10 @@ public class Mac_96062 implements IMacCaculator2{
                 }
             }
             Pair<Boolean, EncryResult> lEncryResultPair = null;
-            if (param.getmSecurityType() == Constant.SOFT) {
-                lEncryResultPair = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
-            }else if (param.getmSecurityType() == Constant.HARD){
-                lEncryResultPair = pSecurity.encryDataHard(buf,param.getHardEncryParam());
+            if (pSecurityType == Constant.SOFT) {
+                lEncryResultPair = pSecurity.encryDataSoft(buf,pEncDecKey);
+            }else if (pSecurityType == Constant.HARD){
+                lEncryResultPair = pSecurity.encryDataHard(buf,pSecurityHardParam);
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
             }

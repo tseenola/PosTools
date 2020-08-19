@@ -24,6 +24,5 @@ public class ExampleInstrumentedTest {
         SecurityParam lMacParam = new SecurityParam(ConvertUtils.hexStringToByte("12345678901234567890123456789011"));
         String needCallMac = "12345678901234567890123456789011";
 
-
     }
 }

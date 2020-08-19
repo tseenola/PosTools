@@ -5,7 +5,6 @@ import android.util.Pair;
 
 import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.EncryResult;
-import com.tseenola.postools.security.pos.mac.model.SecurityParam;
 import com.tseenola.postools.security.utils.Constant;
 import com.tseenola.postools.security.utils.ConvertUtils;
 
@@ -23,9 +22,9 @@ import java.util.Arrays;
  * g) 将运算后的结果（ENC BLOCK2）转换成16 个HEXDECIMAL：
  * h) 取前8个字节作为MAC值。
  */
-public class Mac_UnionEcb2 implements IMacCaculator2{
+public class Mac_UnionEcb2<T> implements IMacCaculator2<T>{
     @Override
-    public Pair<Boolean, EncryResult> getMac(SecurityParam param, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getMac(int pSecurityType, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             byte[] buf = new byte[17];
             byte[] tmpbuf = new byte[17];
@@ -58,12 +57,10 @@ public class Mac_UnionEcb2 implements IMacCaculator2{
 
             System.arraycopy(tmpbuf, 0, buf, 0, 8);
             Pair<Boolean, EncryResult> lEncryResultPair = null;
-            if (param.getmSecurityType() == Constant.SOFT) {
-                lEncryResultPair = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
-                //macbuf = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
-            }else if (param.getmSecurityType() == Constant.HARD){
-                lEncryResultPair = pSecurity.encryDataHard(buf,param.getHardEncryParam());
-                //macbuf = pSecurity.encryDataHard(buf,param.getHardEncryParam());
+            if (pSecurityType == Constant.SOFT) {
+                lEncryResultPair = pSecurity.encryDataSoft(buf,pEncDecKey);
+            }else if (pSecurityType == Constant.HARD){
+                lEncryResultPair = pSecurity.encryDataHard(buf,pSecurityHardParam);
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
             }
@@ -81,12 +78,10 @@ public class Mac_UnionEcb2 implements IMacCaculator2{
 
             Arrays.fill(macbuf, (byte) 0x00);
 
-            if (param.getmSecurityType() == Constant.SOFT){
-                lEncryResultPair = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
-                //macbuf = pSecurity.encryDataSoft(buf,param.getSoftEncryKeys());
-            }else if (param.getmSecurityType() == Constant.HARD){
-                lEncryResultPair = pSecurity.encryDataHard(buf,param.getHardEncryParam());
-                //macbuf = pSecurity.encryDataHard(buf,param.getHardEncryParam());
+            if (pSecurityType == Constant.SOFT){
+                lEncryResultPair = pSecurity.encryDataSoft(buf,pEncDecKey);
+            }else if (pSecurityType == Constant.HARD){
+                lEncryResultPair = pSecurity.encryDataHard(buf,pSecurityHardParam);
             } else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
             }

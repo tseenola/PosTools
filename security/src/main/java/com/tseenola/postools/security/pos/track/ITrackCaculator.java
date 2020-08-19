@@ -7,7 +7,7 @@ import com.tseenola.postools.security.model.EncryResult;
 import com.tseenola.postools.security.utils.Constant;
 
 /**
- * Created by lenovo on 2020/8/17.
+ * Created by lijun on 2020/8/17.
  * 描述：
  */
 public interface ITrackCaculator<T> {

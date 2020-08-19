@@ -1,5 +1,8 @@
 package com.tseenola.postools.security.model;
 
+/**
+ * Created by lijun on 2020/7/30.
+ */
 public class BaseResult {
     protected String errMsg;
 

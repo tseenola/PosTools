@@ -5,7 +5,7 @@ import android.util.Pair;
 import com.tseenola.postools.security.model.EncryResult;
 
 /**
- * Created by lenovo on 2020/7/30.
+ * Created by lijun on 2020/7/30.
  * 描述：这个接口主要负责加密算法的调用
  * 例如 DES,3DES,SM4 and so on
  */

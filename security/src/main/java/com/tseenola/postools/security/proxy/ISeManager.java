@@ -3,7 +3,7 @@ package com.tseenola.postools.security.proxy;
 import com.tseenola.postools.security.utils.Constant;
 
 /**
- * Created by lenovo on 2020/8/18.
+ * Created by lijun on 2020/8/18.
  * 描述：
  */
 public interface ISeManager {

@@ -7,7 +7,10 @@ import com.tseenola.postools.security.model.EncryResult;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-
+/**
+ * Created by lijun on 2020/8/17.
+ * 描述：
+ */
 public class DesImpl<T> implements ISecurity<T> {
     /**
      * des软加密

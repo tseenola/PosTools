@@ -3,6 +3,7 @@ package com.tseenola.postools.security.pos.mac.model;
 import com.tseenola.postools.security.utils.Constant;
 
 /**
+ * Created by lijun on 2020/7/30.
  * 计算Mac/pin/track需要传入的参数
  */
 public class SecurityParam {

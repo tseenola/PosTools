@@ -5,7 +5,9 @@ import android.util.Pair;
 import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.EncryResult;
 import com.tseenola.postools.security.utils.Constant;
-
+/**
+ * Created by lijun on 2020/7/30.
+ */
 public interface IMacCaculator2<T> {
     /**
      *

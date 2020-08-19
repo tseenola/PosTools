@@ -4,7 +4,9 @@ import android.support.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-
+/**
+ * Created by lijun on 2020/7/30.
+ */
 public class Constant {
     /**
      * 算法类型

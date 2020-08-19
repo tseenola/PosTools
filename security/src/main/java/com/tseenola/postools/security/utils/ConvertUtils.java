@@ -6,10 +6,9 @@ import android.text.TextUtils;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Created by lenovo on 2016/11/20.
+ * Created by lijun on 2016/11/20.
  * 描述：
  */
-
 public class ConvertUtils {
 
     public static int PubBcdToByte(byte ch) {

@@ -1,7 +1,5 @@
 package com.tseenola.postools.security.pos.mac;
 
-import android.media.Image;
-
 import com.tseenola.postools.security.pos.mac.algorithm.IMacCaculator2;
 import com.tseenola.postools.security.pos.mac.algorithm.Mac_96062;
 import com.tseenola.postools.security.pos.mac.algorithm.Mac_UnionEcb2;
@@ -9,6 +7,7 @@ import com.tseenola.postools.security.pos.mac.algorithm.Mac_x992;
 import com.tseenola.postools.security.utils.Constant;
 
 /**
+ * Created by lijun on 2020/7/30.
  * 获取mac算法的工厂方法
  */
 public class MacAlgorithFactory {

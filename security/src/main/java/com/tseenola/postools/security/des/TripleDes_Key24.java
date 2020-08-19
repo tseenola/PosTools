@@ -6,6 +6,7 @@ import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.EncryResult;
 
 /**
+ * Created by lijun on 2020/7/30.
  * 3DES
  * 密钥长度 24 字节
  */

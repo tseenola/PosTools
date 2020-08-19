@@ -17,7 +17,7 @@ import com.tseenola.postools.security.utils.Constant;
  * (5) 直至所有分组结束，取最后结果的左半部作为MAC。
  *
  */
-public class Mac_x992<T> implements IMacCaculator2<T>{
+public class Mac_x99<T> implements IMacCaculator<T> {
     /**
      * 将b1和b2做异或，然后返回
      * @param b1

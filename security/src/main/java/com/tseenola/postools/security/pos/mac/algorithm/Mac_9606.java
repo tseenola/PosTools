@@ -17,7 +17,7 @@ import java.util.Arrays;
  * a) 每8个字节做异或
  * b) 最后异或的结果做一次DES运算
  */
-public class Mac_96062<T> implements IMacCaculator2<T>{
+public class Mac_9606<T> implements IMacCaculator<T> {
     @Override
     public Pair<Boolean, EncryResult> getMac(int pSecurityType, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{

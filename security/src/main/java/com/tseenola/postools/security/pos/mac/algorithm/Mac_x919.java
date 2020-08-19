@@ -22,7 +22,7 @@ import com.tseenola.postools.security.utils.Constant;
  *    (7)      用MAC密钥左半部加密(6)的结果。
  *    (8)      取(7)的结果的左半部作为MAC。
  */
-public class Mac_x9192<T> implements IMacCaculator2<T>{
+public class Mac_x919<T> implements IMacCaculator<T> {
     @Override
     public Pair<Boolean, EncryResult> getMac(int pSecurityType, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
@@ -37,7 +37,7 @@ public class Mac_x9192<T> implements IMacCaculator2<T>{
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
             }
-            macX99 = new Mac_x992().getMac(pSecurityType,pEncDecKey, pSecurityHardParam,pNeedCallMacDatas, pSecurity);
+            macX99 = new Mac_x99().getMac(pSecurityType,pEncDecKey, pSecurityHardParam,pNeedCallMacDatas, pSecurity);
             if (!macX99.first) {
                 return macX99;
             }

@@ -8,7 +8,7 @@ import com.tseenola.postools.security.utils.Constant;
 /**
  * Created by lijun on 2020/7/30.
  */
-public interface IMacCaculator2<T> {
+public interface IMacCaculator<T> {
     /**
      *
      * @param pSecurityType      加密或者解密

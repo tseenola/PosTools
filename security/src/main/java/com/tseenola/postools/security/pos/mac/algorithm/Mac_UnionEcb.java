@@ -22,7 +22,7 @@ import java.util.Arrays;
  * g) 将运算后的结果（ENC BLOCK2）转换成16 个HEXDECIMAL：
  * h) 取前8个字节作为MAC值。
  */
-public class Mac_UnionEcb2<T> implements IMacCaculator2<T>{
+public class Mac_UnionEcb<T> implements IMacCaculator<T> {
     @Override
     public Pair<Boolean, EncryResult> getMac(int pSecurityType, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{

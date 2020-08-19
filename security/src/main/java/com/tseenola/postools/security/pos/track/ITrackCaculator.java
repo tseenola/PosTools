@@ -12,16 +12,8 @@ import com.tseenola.postools.security.utils.Constant;
  */
 public interface ITrackCaculator<T> {
     /**
-     * 对 磁道进行加密
-     * @param param
-     * @param pExplainTrack 磁道明文
-     * @param pTrackType 磁道类型 2、3 磁道
-     * @param pSecurity
-     * @return
-     */
-    /**
      * 对2、3 磁道进行加密
-     * @param pSecurityType         加密或者解密
+     * @param pSecurityBy         加密或者解密
      * @param pEncDecKey            软加密传入的Key
      * @param pSecurityHardParam    硬加密需要传入的参数（主密钥，密钥索引，密钥类型，加密方式des,sm4等等.....）
      * @param pExplainTrack         磁道明文
@@ -29,5 +21,5 @@ public interface ITrackCaculator<T> {
      * @param pSecurity
      * @return
      */
-    Pair<Boolean, EncryResult> getEncryedTrack(@Constant.SecurityType int pSecurityType, byte[] pEncDecKey,T pSecurityHardParam,String pExplainTrack, @Constant.TrackType int pTrackType, ISecurity pSecurity);
+    Pair<Boolean, EncryResult> getEncryedTrack(@Constant.SecurityBy int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, String pExplainTrack, @Constant.TrackType int pTrackType, ISecurity pSecurity);
 }

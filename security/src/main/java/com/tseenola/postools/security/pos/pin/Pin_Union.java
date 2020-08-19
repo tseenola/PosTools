@@ -18,7 +18,7 @@ import com.tseenola.postools.security.utils.ConvertUtils;
  */
 public class Pin_Union<T> implements IPinCaculator<T>{
     @Override
-    public Pair<Boolean, EncryResult> getEncryedPin(int pSecurityType, byte[] pEncDecKey, T pSecurityHardParam, String pPan, String pExplainPin, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getEncryedPin(int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, String pPan, String pExplainPin, ISecurity pSecurity) {
         try{
             //1 卡号从右边第二个字符向左取12位，前面补4个0，组成16位16进制字符。
             String inputtedCardNo = pPan;
@@ -44,9 +44,9 @@ public class Pin_Union<T> implements IPinCaculator<T>{
                 xorResult[i] = (byte) (cardno_b[i] ^ pint_b[i]);
             }
             //4 对亦或后的结果进行3DES加密
-            if (pSecurityType == Constant.SOFT) {
+            if (pSecurityBy == Constant.SOFT) {
                 return pSecurity.encryDataSoft(xorResult,pEncDecKey);
-            }else if (pSecurityType == Constant.HARD){
+            }else if (pSecurityBy == Constant.HARD){
                 return pSecurity.encryDataHard(xorResult,pSecurityHardParam);
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));

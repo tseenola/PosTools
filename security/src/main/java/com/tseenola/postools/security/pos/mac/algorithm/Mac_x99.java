@@ -33,7 +33,7 @@ public class Mac_x99<T> implements IMacCaculator<T> {
     }
 
     @Override
-    public Pair<Boolean, EncryResult> getMac(int pSecurityType, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getMac(int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             final int dataLength = pNeedCallMacDatas.length;
             final int lastLength = dataLength % 8;
@@ -51,9 +51,9 @@ public class Mac_x99<T> implements IMacCaculator<T> {
             Pair<Boolean, EncryResult> lEncryResultPair = null;
             for (int i = 0; i < blockCount; i++) {
                 byte[] tXor = xOr(desXor, dataBlock[i]);
-                if (pSecurityType == Constant.SOFT) {
+                if (pSecurityBy == Constant.SOFT) {
                     lEncryResultPair = pSecurity.encryDataSoft(tXor,pEncDecKey);
-                }else if (pSecurityType == Constant.HARD){
+                }else if (pSecurityBy == Constant.HARD){
                     lEncryResultPair = pSecurity.encryDataHard(tXor,pSecurityHardParam);
                 }else {
                     return Pair.create(false,new EncryResult("无效的参数【加密方式】"));

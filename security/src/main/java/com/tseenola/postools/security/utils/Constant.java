@@ -35,7 +35,7 @@ public class Constant {
     public static final int HARD = 1;
     @IntDef({SOFT,HARD})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface SecurityType{}
+    public @interface SecurityBy {}
 
     //=========================================分割线======================================================
     /**

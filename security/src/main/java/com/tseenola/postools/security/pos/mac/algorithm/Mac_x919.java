@@ -24,34 +24,34 @@ import com.tseenola.postools.security.utils.Constant;
  */
 public class Mac_x919<T> implements IMacCaculator<T> {
     @Override
-    public Pair<Boolean, EncryResult> getMac(int pSecurityType, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getMac(int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             Pair<Boolean, EncryResult> macX99 = null;
             byte[] keyLeft = new byte[8];
             byte[] keyRight = new byte[8];
-            if (pSecurityType == Constant.SOFT) {
+            if (pSecurityBy == Constant.SOFT) {
                 System.arraycopy(pEncDecKey, 0, keyLeft, 0, 8);
                 System.arraycopy(pEncDecKey, 8, keyRight, 0, 8);
-            }else if (pSecurityType == Constant.HARD) {
+            }else if (pSecurityBy == Constant.HARD) {
 
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
             }
-            macX99 = new Mac_x99().getMac(pSecurityType,pEncDecKey, pSecurityHardParam,pNeedCallMacDatas, pSecurity);
+            macX99 = new Mac_x99().getMac(pSecurityBy,pEncDecKey, pSecurityHardParam,pNeedCallMacDatas, pSecurity);
             if (!macX99.first) {
                 return macX99;
             }
 
             byte[] result99 = macX99.second.getEncryDecryResult();
             Pair<Boolean, EncryResult> lEncryResultPair = null;
-            if (pSecurityType == Constant.SOFT) {
+            if (pSecurityBy == Constant.SOFT) {
                 lEncryResultPair = pSecurity.decryDataSoft(result99,keyRight);
                 if (!lEncryResultPair.first) {
                     return lEncryResultPair;
                 }
                 byte[] resultTemp = lEncryResultPair.second.getEncryDecryResult();
                 return pSecurity.encryDataSoft(resultTemp,keyLeft);
-            }else if (pSecurityType == Constant.HARD) {
+            }else if (pSecurityBy == Constant.HARD) {
                 lEncryResultPair = pSecurity.decryDataHard(result99,pSecurityHardParam);
                 if (!lEncryResultPair.first) {
                     return lEncryResultPair;

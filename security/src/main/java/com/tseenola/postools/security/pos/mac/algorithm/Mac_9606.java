@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public class Mac_9606<T> implements IMacCaculator<T> {
     @Override
-    public Pair<Boolean, EncryResult> getMac(int pSecurityType, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getMac(int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             byte[] buf = new byte[17];
             byte[] tmpbuf = new byte[17];
@@ -45,9 +45,9 @@ public class Mac_9606<T> implements IMacCaculator<T> {
                 }
             }
             Pair<Boolean, EncryResult> lEncryResultPair = null;
-            if (pSecurityType == Constant.SOFT) {
+            if (pSecurityBy == Constant.SOFT) {
                 lEncryResultPair = pSecurity.encryDataSoft(buf,pEncDecKey);
-            }else if (pSecurityType == Constant.HARD){
+            }else if (pSecurityBy == Constant.HARD){
                 lEncryResultPair = pSecurity.encryDataHard(buf,pSecurityHardParam);
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));

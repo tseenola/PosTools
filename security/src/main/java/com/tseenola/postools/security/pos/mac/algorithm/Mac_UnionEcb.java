@@ -24,7 +24,7 @@ import java.util.Arrays;
  */
 public class Mac_UnionEcb<T> implements IMacCaculator<T> {
     @Override
-    public Pair<Boolean, EncryResult> getMac(int pSecurityType, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getMac(int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             byte[] buf = new byte[17];
             byte[] tmpbuf = new byte[17];
@@ -57,9 +57,9 @@ public class Mac_UnionEcb<T> implements IMacCaculator<T> {
 
             System.arraycopy(tmpbuf, 0, buf, 0, 8);
             Pair<Boolean, EncryResult> lEncryResultPair = null;
-            if (pSecurityType == Constant.SOFT) {
+            if (pSecurityBy == Constant.SOFT) {
                 lEncryResultPair = pSecurity.encryDataSoft(buf,pEncDecKey);
-            }else if (pSecurityType == Constant.HARD){
+            }else if (pSecurityBy == Constant.HARD){
                 lEncryResultPair = pSecurity.encryDataHard(buf,pSecurityHardParam);
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
@@ -78,9 +78,9 @@ public class Mac_UnionEcb<T> implements IMacCaculator<T> {
 
             Arrays.fill(macbuf, (byte) 0x00);
 
-            if (pSecurityType == Constant.SOFT){
+            if (pSecurityBy == Constant.SOFT){
                 lEncryResultPair = pSecurity.encryDataSoft(buf,pEncDecKey);
-            }else if (pSecurityType == Constant.HARD){
+            }else if (pSecurityBy == Constant.HARD){
                 lEncryResultPair = pSecurity.encryDataHard(buf,pSecurityHardParam);
             } else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));

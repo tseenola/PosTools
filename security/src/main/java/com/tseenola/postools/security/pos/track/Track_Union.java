@@ -21,7 +21,7 @@ import com.tseenola.postools.security.utils.ConvertUtils;
  */
 public class Track_Union implements ITrackCaculator{
     @Override
-    public Pair<Boolean, EncryResult> getEncryedTrack(int pSecurityType, byte[] pEncDecKey, Object pSecurityHardParam, String pExplainTrack, int pTrackType, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getEncryedTrack(int pSecurityBy, byte[] pEncDecKey, Object pSecurityHardParam, String pExplainTrack, int pTrackType, ISecurity pSecurity) {
         try{
             //1  对于二磁道或三磁道缺失的情况，终端应上送8字节全F
             String src = pExplainTrack;
@@ -37,9 +37,9 @@ public class Track_Union implements ITrackCaculator{
             //4  采用双倍长密钥TDK分别对TDB2，TDB3进行加密，将密文输出后按照对应位置替换原先的明文数据。
             byte[] encryOut = new byte[8];
             Pair<Boolean, EncryResult> lEncryResultPair = null;
-            if (pSecurityType == Constant.SOFT) {
+            if (pSecurityBy == Constant.SOFT) {
                 lEncryResultPair = pSecurity.encryDataSoft(ConvertUtils.hexStringToByte(encryTemp),pEncDecKey);
-            }else if (pSecurityType == Constant.HARD){
+            }else if (pSecurityBy == Constant.HARD){
                 lEncryResultPair = pSecurity.encryDataHard(ConvertUtils.hexStringToByte(encryTemp),pSecurityHardParam);
             }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));

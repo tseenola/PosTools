@@ -20,6 +20,9 @@ import com.tseenola.postools.security.utils.ConvertUtils;
  *  4  采用双倍长密钥TDK分别对TDB2，TDB3进行加密，将密文输出后按照对应位置替换原先的明文数据。
  */
 public class Track_Union implements ITrackCaculator{
+
+    private String TAG = this.getClass().getSimpleName();
+
     @Override
     public Pair<Boolean, EncryResult> getEncryedTrack(int pSecurityBy, byte[] pEncDecKey, Object pSecurityHardParam, String pExplainTrack, int pTrackType, ISecurity pSecurity) {
         try{

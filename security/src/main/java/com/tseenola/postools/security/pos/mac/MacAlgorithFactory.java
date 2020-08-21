@@ -1,9 +1,9 @@
 package com.tseenola.postools.security.pos.mac;
 
 import com.tseenola.postools.security.pos.mac.algorithm.IMacCaculator;
-import com.tseenola.postools.security.pos.mac.algorithm.Mac_9606;
-import com.tseenola.postools.security.pos.mac.algorithm.Mac_UnionEcb;
-import com.tseenola.postools.security.pos.mac.algorithm.Mac_x99;
+import com.tseenola.postools.security.pos.mac.algorithm.international.Mac_9606;
+import com.tseenola.postools.security.pos.mac.algorithm.international.Mac_UnionEcb;
+import com.tseenola.postools.security.pos.mac.algorithm.international.Mac_x99;
 import com.tseenola.postools.security.utils.Constant;
 
 /**
@@ -11,6 +11,7 @@ import com.tseenola.postools.security.utils.Constant;
  * 获取mac算法的工厂方法
  */
 public class MacAlgorithFactory {
+
     public static IMacCaculator getMacCaculator(@Constant.MacType int pMacType){
         IMacCaculator iMacCaculator2 = null;
         switch (pMacType){

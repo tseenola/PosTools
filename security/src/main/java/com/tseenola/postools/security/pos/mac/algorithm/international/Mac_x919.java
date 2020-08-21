@@ -1,10 +1,11 @@
-package com.tseenola.postools.security.pos.mac.algorithm;
+package com.tseenola.postools.security.pos.mac.algorithm.international;
 
 
 import android.util.Pair;
 
 import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.EncryResult;
+import com.tseenola.postools.security.pos.mac.algorithm.IMacCaculator;
 import com.tseenola.postools.security.utils.Constant;
 
 /**
@@ -23,8 +24,11 @@ import com.tseenola.postools.security.utils.Constant;
  *    (8)      取(7)的结果的左半部作为MAC。
  */
 public class Mac_x919<T> implements IMacCaculator<T> {
+
+    private String TAG = this.getClass().getSimpleName();
+
     @Override
-    public Pair<Boolean, EncryResult> getMac(int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getMac(@Constant.SecurityBy int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             Pair<Boolean, EncryResult> macX99 = null;
             byte[] keyLeft = new byte[8];

@@ -1,9 +1,10 @@
-package com.tseenola.postools.security.pos.mac.algorithm;
+package com.tseenola.postools.security.pos.mac.algorithm.international;
 
 import android.util.Pair;
 
 import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.EncryResult;
+import com.tseenola.postools.security.pos.mac.algorithm.IMacCaculator;
 import com.tseenola.postools.security.utils.Constant;
 
 /**
@@ -18,6 +19,9 @@ import com.tseenola.postools.security.utils.Constant;
  *
  */
 public class Mac_x99<T> implements IMacCaculator<T> {
+
+    private String TAG = this.getClass().getSimpleName();
+
     /**
      * 将b1和b2做异或，然后返回
      * @param b1
@@ -33,7 +37,7 @@ public class Mac_x99<T> implements IMacCaculator<T> {
     }
 
     @Override
-    public Pair<Boolean, EncryResult> getMac(int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getMac(@Constant.SecurityBy int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             final int dataLength = pNeedCallMacDatas.length;
             final int lastLength = dataLength % 8;

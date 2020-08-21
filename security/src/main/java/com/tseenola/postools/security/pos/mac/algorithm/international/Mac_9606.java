@@ -1,10 +1,11 @@
-package com.tseenola.postools.security.pos.mac.algorithm;
+package com.tseenola.postools.security.pos.mac.algorithm.international;
 
 
 import android.util.Pair;
 
 import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.EncryResult;
+import com.tseenola.postools.security.pos.mac.algorithm.IMacCaculator;
 import com.tseenola.postools.security.utils.Constant;
 
 import java.util.Arrays;
@@ -18,8 +19,11 @@ import java.util.Arrays;
  * b) 最后异或的结果做一次DES运算
  */
 public class Mac_9606<T> implements IMacCaculator<T> {
+
+    private String TAG = this.getClass().getSimpleName();
+
     @Override
-    public Pair<Boolean, EncryResult> getMac(int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getMac(@Constant.SecurityBy int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
             byte[] buf = new byte[17];
             byte[] tmpbuf = new byte[17];

@@ -198,4 +198,56 @@ public class ConvertUtils {
 
         return ucBcd;
     }
+
+    /**
+     * 对指定数据进行填充，直到达到需要的长度
+     *
+     * @param dir     在左或者右填充
+     * @param fill    长度不足用什么填充
+     * @param content 被填充的内容
+     * @param mastLen 需要达到的长度
+     * @return
+     */
+
+    public static String fillContentBy(Dir dir,  String fill,  String content, int mastLen){
+        if(TextUtils.isEmpty(fill)){
+            return "";
+        }
+        String x = fill;
+        int contentLen = content.length();
+        int needAddLen = mastLen - contentLen;
+        if(needAddLen<=0){
+            return content;
+        }
+        while(fill.length()<needAddLen){
+            fill+=x;
+        }
+        if(dir== Dir.left){
+            content = fill+content;
+        }else{
+            content = content+fill;
+        }
+        return content;
+    }
+    public enum Dir{
+        left,right
+    }
+
+    /**
+     * 异或
+     * @param src1
+     * @param src2
+     * @param length
+     */
+    public static void doXor(byte[] src1, byte[] src2, int length) {
+        int i;
+        int data1 = 0;
+        int data2 = 0;
+        for (i = 0; i < length; i++) {
+            data1 = 0x00ff & src1[i];
+            data2 = 0x00ff & src2[i];
+            data1 ^= data2;
+            src1[i] = (byte) (data1 & 0x00ff);
+        }
+    }
 }

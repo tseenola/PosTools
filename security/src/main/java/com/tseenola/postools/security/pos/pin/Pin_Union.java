@@ -17,6 +17,9 @@ import com.tseenola.postools.security.utils.ConvertUtils;
  * 4 对亦或后的结果进行3DES加密
  */
 public class Pin_Union<T> implements IPinCaculator<T>{
+
+    private String TAG = this.getClass().getSimpleName();
+
     @Override
     public Pair<Boolean, EncryResult> getEncryedPin(int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, String pPan, String pExplainPin, ISecurity pSecurity) {
         try{

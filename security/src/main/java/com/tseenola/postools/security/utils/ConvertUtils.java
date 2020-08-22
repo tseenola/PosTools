@@ -2,6 +2,7 @@ package com.tseenola.postools.security.utils;
 
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 
@@ -249,5 +250,27 @@ public class ConvertUtils {
             data1 ^= data2;
             src1[i] = (byte) (data1 & 0x00ff);
         }
+    }
+
+    /**
+     * 分组亦或
+     * @param mabs 被分组亦或数据
+     * @param pZuLen 多少字节一分组
+     * @return
+     */
+    public static byte[] getResultBlock(byte[] mabs,int pZuLen) {
+        int xorLen = pZuLen;
+        byte[] mab1 = new byte[xorLen];
+        byte[] temp = new byte[xorLen];
+        System.arraycopy(mabs, 0, mab1, 0, xorLen);
+        for (int i = xorLen; i < mabs.length; i += xorLen) {
+            System.arraycopy(mabs, i, temp, 0, xorLen);
+            Log.d(" DEBUG2", "doXor 亦或输入 mab1: "+ConvertUtils.bytesToHexString(mab1));
+            Log.d(" DEBUG2", "doXor 亦或输入 temp: "+ConvertUtils.bytesToHexString(temp));
+            ConvertUtils.doXor(mab1, temp, xorLen);
+            Log.d(" DEBUG2", "doXor 亦或输出 mab1: "+ConvertUtils.bytesToHexString(mab1) );
+            Log.d(" DEBUG2", "》》》》》》》》》》》》》》》》》" );
+        }
+        return mab1;
     }
 }

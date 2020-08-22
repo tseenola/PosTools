@@ -1,5 +1,6 @@
 package com.tseenola.postools.security.pos.pin;
 
+import android.util.Log;
 import android.util.Pair;
 
 import com.tseenola.postools.security.intface.ISecurity;
@@ -23,17 +24,19 @@ public class Pin_Union<T> implements IPinCaculator<T>{
     @Override
     public Pair<Boolean, EncryResult> getEncryedPin(int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, String pPan, String pExplainPin, ISecurity pSecurity) {
         try{
+            Log.d(TAG + " DEBUG2", "getEncryedPin: 输入数据 pSecurityBy: " + pSecurityBy+" pEncDecKey: "+
+                    ConvertUtils.bytesToHexString(pEncDecKey)+ " pPan: "+ pPan + " pExplainPin: "+ pExplainPin);
             //1 卡号从右边第二个字符向左取12位，前面补4个0，组成16位16进制字符。
             String inputtedCardNo = pPan;
             if(inputtedCardNo==null || inputtedCardNo.length()<13){
                 return Pair.create(false,new EncryResult("卡号长度不够:"+pPan));
             }
+
             int inputedCardNoLen = inputtedCardNo.length();
             String cardno12 = inputtedCardNo.substring(inputedCardNoLen-13,inputedCardNoLen-1);
-
             String cardno16 = "0000"+cardno12;
             byte cardno_b [] = ConvertUtils.hexStringToByte(cardno16);
-
+            Log.d(TAG + " DEBUG2", "getEncryedPin: 卡号从右边第二个字符向左取12位，前面补4个0，组成16位16进制字符: " + cardno16);
             //2 密码按照一个字节长度+密码+不够16个16进制字符就补位F
             String inputtedPin = pExplainPin;
             if(inputtedPin == null || inputtedPin.length()!=6){
@@ -41,11 +44,13 @@ public class Pin_Union<T> implements IPinCaculator<T>{
             }
             String pin16 = "06"+inputtedPin+"FFFFFFFF";
             byte pint_b [] = ConvertUtils.hexStringToByte(pin16);
+            Log.d(TAG + " DEBUG2", "getEncryedPin:密码按照一个字节长度+密码+不够16个16进制字符就补位F: " + pin16);
             //3 对处理好以后的卡号和密码进行亦或
             byte xorResult [] = new byte[8];
             for(int i = 0;i<8;i++){
                 xorResult[i] = (byte) (cardno_b[i] ^ pint_b[i]);
             }
+            Log.d(TAG + " DEBUG2", "getEncryedPin:3.对处理好以后的卡号和密码进行亦或得到: " + ConvertUtils.bytesToHexString(xorResult));
             //4 对亦或后的结果进行3DES加密
             if (pSecurityBy == Constant.SOFT) {
                 return pSecurity.encryDataSoft(xorResult,pEncDecKey);

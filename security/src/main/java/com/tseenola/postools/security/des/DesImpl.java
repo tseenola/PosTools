@@ -78,7 +78,7 @@ public class DesImpl<T> implements ISecurity<T> {
             throw new IllegalArgumentException("被加密数据长度必须为8的倍数");
         }
         if (pKey.length!=8){
-            throw new IllegalArgumentException("密钥长度必须为8的倍数");
+            throw new IllegalArgumentException("密钥长度应该为8字节");
         }
     }
 }

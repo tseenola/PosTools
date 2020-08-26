@@ -20,7 +20,7 @@ public class DesImpl<T> implements ISecurity<T> {
      * @throws Exception
      */
     @Override
-    public Pair<Boolean, EncryResult> encryDataSoft(byte[] pNeedEncryData, byte[] pKey) throws Exception {
+    public Pair<Boolean, EncryResult> encryDataSoft(byte[] pNeedEncryData, byte[] pKey){
         try{
             checkParams(pNeedEncryData ,pKey);
             SecretKeySpec secretKey = new SecretKeySpec(pKey, "DES");
@@ -35,7 +35,7 @@ public class DesImpl<T> implements ISecurity<T> {
     }
 
     @Override
-    public Pair<Boolean, EncryResult> decryDataSoft(byte[] pNeedEncryData, byte[] pKey) throws Exception {
+    public Pair<Boolean, EncryResult> decryDataSoft(byte[] pNeedEncryData, byte[] pKey){
         try{
             checkParams(pNeedEncryData ,pKey);
             SecretKeySpec secretKey = new SecretKeySpec(pKey, "DES");
@@ -51,12 +51,12 @@ public class DesImpl<T> implements ISecurity<T> {
     }
 
     @Override
-    public Pair<Boolean, EncryResult> encryDataHard(byte[] pNeedEncryData, T hardEncryParam) throws Exception {
+    public Pair<Boolean, EncryResult> encryDataHard(byte[] pNeedEncryData, T hardEncryParam){
         return Pair.create(false,new EncryResult("硬件加/解密需要你自己继承此类并覆写此函数"));
     }
 
     @Override
-    public Pair<Boolean, EncryResult> decryDataHard(byte[] pNeedDecryData, T hardDecryParam) throws Exception {
+    public Pair<Boolean, EncryResult> decryDataHard(byte[] pNeedDecryData, T hardDecryParam){
         return Pair.create(false,new EncryResult("硬件加/解密需要你自己继承此类并覆写此函数"));
     }
 

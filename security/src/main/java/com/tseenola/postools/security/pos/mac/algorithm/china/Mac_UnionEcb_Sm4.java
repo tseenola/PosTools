@@ -91,6 +91,4 @@ public class Mac_UnionEcb_Sm4 <T> implements IMacCaculator<T> {
             return Pair.create(false,new EncryResult(pE.getMessage()));
         }
     }
-
-
 }

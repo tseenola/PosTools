@@ -24,7 +24,7 @@ public class Track_Union implements ITrackCaculator{
     private String TAG = this.getClass().getSimpleName();
 
     @Override
-    public Pair<Boolean, EncryResult> getEncryedTrack(int pSecurityBy, byte[] pEncDecKey, Object pSecurityHardParam, String pExplainTrack, int pTrackType, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getEncryedTrack(@Constant.SecurityBy int pSecurityBy, byte[] pEncDecKey, Object pSecurityHardParam, String pExplainTrack, int pTrackType, ISecurity pSecurity) {
         try{
             //1  对于二磁道或三磁道缺失的情况，终端应上送8字节全F
             String src = pExplainTrack;

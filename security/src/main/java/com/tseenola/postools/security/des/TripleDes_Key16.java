@@ -12,7 +12,7 @@ import com.tseenola.postools.security.model.EncryResult;
  */
 public class TripleDes_Key16<T> implements ISecurity<T> {
     @Override
-    public Pair<Boolean, EncryResult> encryDataSoft(byte[] pNeedEncryData, byte[] pKey) throws Exception {
+    public Pair<Boolean, EncryResult> encryDataSoft(byte[] pNeedEncryData, byte[] pKey){
         try{
             checkParams16(pNeedEncryData,pKey);
             byte k1[] = new byte [8];
@@ -43,7 +43,7 @@ public class TripleDes_Key16<T> implements ISecurity<T> {
     }
 
     @Override
-    public Pair<Boolean, EncryResult> decryDataSoft(byte[] pNeedEncryData, byte[] pKey) throws Exception {
+    public Pair<Boolean, EncryResult> decryDataSoft(byte[] pNeedEncryData, byte[] pKey){
         try{
             checkParams16(pNeedEncryData,pKey);
 
@@ -75,13 +75,12 @@ public class TripleDes_Key16<T> implements ISecurity<T> {
     }
 
     @Override
-    public Pair<Boolean, EncryResult> encryDataHard(byte[] pNeedEncryData, T hardEncryParam) throws Exception {
+    public Pair<Boolean, EncryResult> encryDataHard(byte[] pNeedEncryData, T hardEncryParam){
         return Pair.create(false,new EncryResult("硬件加/解密需要你自己继承此类并覆写此函数"));
-
     }
 
     @Override
-    public Pair<Boolean, EncryResult> decryDataHard(byte[] pNeedDecryData, T hardDecryParam) throws Exception {
+    public Pair<Boolean, EncryResult> decryDataHard(byte[] pNeedDecryData, T hardDecryParam){
         return Pair.create(false,new EncryResult("硬件加/解密需要你自己继承此类并覆写此函数"));
     }
 

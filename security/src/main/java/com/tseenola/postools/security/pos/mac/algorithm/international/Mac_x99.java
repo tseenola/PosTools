@@ -22,20 +22,6 @@ public class Mac_x99<T> implements IMacCaculator<T> {
 
     private String TAG = this.getClass().getSimpleName();
 
-    /**
-     * 将b1和b2做异或，然后返回
-     * @param b1
-     * @param b2
-     * @return 异或结果
-     */
-    private byte[] xOr(byte[] b1, byte[] b2) {
-        byte[] tXor = new byte[Math.min(b1.length, b2.length)];
-        for (int i = 0; i < tXor.length; i++) {
-            tXor[i] = (byte) (b1[i] ^ b2[i]); // 异或(Xor)
-        }
-        return tXor;
-    }
-
     @Override
     public Pair<Boolean, EncryResult> getMac(@Constant.SecurityBy int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
@@ -72,5 +58,19 @@ public class Mac_x99<T> implements IMacCaculator<T> {
             pE.printStackTrace();
             return Pair.create(false,new EncryResult(pE.getMessage()));
         }
+    }
+
+    /**
+     * 将b1和b2做异或，然后返回
+     * @param b1
+     * @param b2
+     * @return 异或结果
+     */
+    private byte[] xOr(byte[] b1, byte[] b2) {
+        byte[] tXor = new byte[Math.min(b1.length, b2.length)];
+        for (int i = 0; i < tXor.length; i++) {
+            tXor[i] = (byte) (b1[i] ^ b2[i]); // 异或(Xor)
+        }
+        return tXor;
     }
 }

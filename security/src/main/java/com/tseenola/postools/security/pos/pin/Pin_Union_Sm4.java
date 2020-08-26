@@ -22,11 +22,19 @@ public class Pin_Union_Sm4<T> implements IPinCaculator<T>{
     private String TAG = this.getClass().getSimpleName();
 
     @Override
-    public Pair<Boolean, EncryResult> getEncryedPin(int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, String pPan,
-                                                    String pExplainPin, ISecurity pSecurity) {
+    public Pair<Boolean, EncryResult> getEncryedPin(
+            @Constant.SecurityBy int pSecurityBy, byte[] pEncDecKey,
+            T pSecurityHardParam, String pPan, String pExplainPin, ISecurity pSecurity) {
         try{
-            Log.d(TAG + " DEBUG2", "getEncryedPin: 输入数据 pSecurityBy: " + pSecurityBy+" pEncDecKey: "+
-                    ConvertUtils.bytesToHexString(pEncDecKey)+ " pPan: "+ pPan + " pExplainPin: "+ pExplainPin);
+            if (pSecurityBy == Constant.SOFT){
+                Log.d(TAG + " DEBUG2", "getEncryedPin: 输入数据 pSecurityBy: " + pSecurityBy+" pEncDecKey: "+
+                        ConvertUtils.bytesToHexString(pEncDecKey)+ " pPan: "+ pPan + " pExplainPin: "+ pExplainPin);
+            }else if(pSecurityBy == Constant.HARD){
+                Log.d(TAG + " DEBUG2", "getEncryedPin: 输入数据 pSecurityBy: " + pSecurityBy + " pPan: "+ pPan + " pExplainPin: "+ pExplainPin);
+            }else {
+                return Pair.create(false,new EncryResult("无效的加密类型"));
+            }
+
             //1 卡号从右边第二个字符向左取12位，前面补20个0，组成32位16进制字符。
             int inputedCardNoLen = pPan.length();
             String cardno12 = pPan.substring(inputedCardNoLen-13,inputedCardNoLen-1);

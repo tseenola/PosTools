@@ -1,12 +1,11 @@
 package com.tseenola.postools.commonui.ui;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +32,7 @@ import static android.app.ProgressDialog.STYLE_SPINNER;
  * Created by lenovo on 2020/9/18.
  * 描述：
  */
-public class UploadUrovoLogAty extends AppCompatActivity implements AdapterView.OnItemClickListener,UploadListener {
+public class UploadUrovoLogAty extends Activity implements AdapterView.OnItemClickListener,UploadListener {
     public static final String EXTRA_LOG_PATH = "logPath";//日志路径
     public static final String EXTRA_SN_AND_PACKAGE = "snAndPackage";//sn号和包名
     public static final String EXTRA_UPLOAD_URL = "uploadUrl";//上传服务器地址
@@ -47,7 +46,7 @@ public class UploadUrovoLogAty extends AppCompatActivity implements AdapterView.
     protected AlertDialog.Builder mChoiceTowDialog;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_log);
         mLvLogList = (ListView) findViewById(R.id.lv_LogList);

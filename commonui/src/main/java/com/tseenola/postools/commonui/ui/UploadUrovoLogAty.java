@@ -29,7 +29,7 @@ import java.util.List;
 import static android.app.ProgressDialog.STYLE_SPINNER;
 
 /**
- * Created by lenovo on 2020/9/18.
+ * Created by lijun on 2020/9/18.
  * 描述：
  */
 public class UploadUrovoLogAty extends Activity implements AdapterView.OnItemClickListener,UploadListener {

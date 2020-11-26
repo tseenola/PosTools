@@ -1,10 +1,8 @@
 package com.tseenola.postools.commonui.model;
 
 /**
- * @Author: ZhengJuE
  * @CreateDate: 2020/8/31 20:26
  * @Description:
- * @UpdateUser: ZhengJuE
  * @UpdateDate: 2020/8/31 20:26
  * @UpdateRemark:
  * @Version: 1.0

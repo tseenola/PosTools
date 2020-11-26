@@ -8,10 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @Author: ZhengJuE
  * @CreateDate: 2020/8/31 19:49
  * @Description:
- * @UpdateUser: ZhengJuE
  * @UpdateDate: 2020/8/31 19:49
  * @UpdateRemark:
  * @Version: 1.0

@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * @Author: ZhengJuE
  * @CreateDate: 2020/8/31 20:16
  * @Description:
- * @UpdateUser: ZhengJuE
  * @UpdateDate: 2020/8/31 20:16
  * @UpdateRemark:
  * @Version: 1.0

@@ -13,10 +13,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * @Author: ZhengJuE
  * @CreateDate: 2020/8/31 19:53
  * @Description:
- * @UpdateUser: ZhengJuE
  * @UpdateDate: 2020/8/31 19:53
  * @UpdateRemark:
  * @Version: 1.0

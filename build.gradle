@@ -31,4 +31,6 @@ ext {
     versionName = "1.0"
     targetSdkVersion = 28
     compileSdkVersion = 28
+    //设置是否是module
+    isModule = true
 }

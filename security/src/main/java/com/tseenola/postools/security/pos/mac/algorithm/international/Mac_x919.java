@@ -3,6 +3,7 @@ package com.tseenola.postools.security.pos.mac.algorithm.international;
 
 import android.util.Pair;
 
+import com.tseenola.postools.security.des.DesImpl;
 import com.tseenola.postools.security.intface.ISecurity;
 import com.tseenola.postools.security.model.EncryResult;
 import com.tseenola.postools.security.pos.mac.algorithm.IMacCaculator;
@@ -41,6 +42,7 @@ public class Mac_x919<T> implements IMacCaculator<T> {
     @Override
     public Pair<Boolean, EncryResult> getMac(@Constant.SecurityBy int pSecurityBy, byte[] pEncDecKey, T pSecurityHardParam, byte[] pNeedCallMacDatas, ISecurity pSecurity) {
         try{
+            ISecurity finalDes = new DesImpl();
             Pair<Boolean, EncryResult> macX99 = null;
             byte[] keyLeft = new byte[8];
             byte[] keyRight = new byte[8];
@@ -48,11 +50,11 @@ public class Mac_x919<T> implements IMacCaculator<T> {
                 System.arraycopy(pEncDecKey, 0, keyLeft, 0, 8);
                 System.arraycopy(pEncDecKey, 8, keyRight, 0, 8);
             }else if (pSecurityBy == Constant.HARD) {
-
-            }else {
                 return Pair.create(false,new EncryResult("无效的参数【加密方式】"));
+            }else {
+                return Pair.create(false,new EncryResult("x99不支持硬加密，请先使用 Mac_x99算法和左8字节对数据进行加密，然后使用右8字节密钥对上一步加密结果做DES加密"));
             }
-            macX99 = new Mac_x99().getMac(pSecurityBy,pEncDecKey, pSecurityHardParam,pNeedCallMacDatas, pSecurity);
+            macX99 = new Mac_x99().getMac(pSecurityBy,keyLeft, pSecurityHardParam,pNeedCallMacDatas, finalDes);
             if (!macX99.first) {
                 return macX99;
             }
@@ -60,7 +62,7 @@ public class Mac_x919<T> implements IMacCaculator<T> {
             byte[] result99 = macX99.second.getEncryDecryResult();
             Pair<Boolean, EncryResult> lEncryResultPair = null;
             if (pSecurityBy == Constant.SOFT) {
-                lEncryResultPair = pSecurity.decryDataSoft(result99,keyRight);
+                lEncryResultPair = finalDes.decryDataSoft(result99,keyRight);
                 if (!lEncryResultPair.first) {
                     return lEncryResultPair;
                 }

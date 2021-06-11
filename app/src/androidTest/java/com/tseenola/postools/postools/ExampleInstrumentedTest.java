@@ -6,11 +6,13 @@ import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 import android.util.Pair;
 
+import com.tseenola.postools.security.des.DesImpl;
 import com.tseenola.postools.security.des.TripleDes_Key16;
 import com.tseenola.postools.security.model.EncryResult;
 import com.tseenola.postools.security.pos.mac.algorithm.china.Mac_UnionEcb_Sm4;
 import com.tseenola.postools.security.pos.mac.algorithm.international.Mac_9606;
 import com.tseenola.postools.security.pos.mac.algorithm.international.Mac_UnionEcb;
+import com.tseenola.postools.security.pos.mac.algorithm.international.Mac_x919;
 import com.tseenola.postools.security.sm.Sm4;
 import com.tseenola.postools.security.utils.Constant;
 import com.tseenola.postools.security.utils.ConvertUtils;
@@ -27,6 +29,16 @@ import java.util.Arrays;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
+    @Test
+    public void testMac919(){
+        String sm4Key = "11111111111111111111111111111111";
+        String needCallMac = "1234567890123456AFAFAFAFAFAFAFAF3456789012345678ABCDEFABCDEFABCD";
+        Mac_x919<Object> lObjectMac_x919 = new Mac_x919<>();
+        Pair<Boolean, EncryResult> lMac = lObjectMac_x919.getMac(Constant.SOFT, ConvertUtils.hexStringToByte(sm4Key),
+                null, ConvertUtils.hexStringToByte(needCallMac), new DesImpl());
+        Log.d( " DEBUG2", "....................................: "   );
+    }
+
     @Test
     public void useAppContext() {
         // Context of the app under test.

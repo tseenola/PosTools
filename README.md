@@ -18,6 +18,6 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 
 	dependencies {
-	        implementation 'com.github.tseenola.PosTools:commonui:V210610'
+	        implementation 'com.github.tseenola:PosTools:V210510'
 	}
 Share this release:
